@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script type="module" src="index.js"></script>
+    <script>
+        
+        function getCheckedRadioButton(name) {
+            const radioButtonElements = document.getElementsByName(name)
+            const count = radioButtonElements.length;
+            console.log()
+            for (let i = 0; i < count; i++) {
+                if (radioButtonElements.item(i).checked) {
+                    return radioButtonElements.item(i).value;
+                }
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <h1>wikidataを対象としたEntityLinkingシステム</h1>
+    <details>
+        <summary><b>詳細設定</b></summary>
+        <div>
+            <b>ラベルの検索設定</b>:<br>
+            <label><input type="radio" id="exactMatch" name="selectSearchType" value="Full" checked>完全一致</label><br>
+            <label><input type="radio" id="prefixMatch" name="selectSearchType" value="forward">前方一致</label><br>
+            <label><input type="radio" id="fuzzySearch" name="selectSearchType" value="ambi">あいまい検索</label><br>
+            <label>ラベル取得上限数 <input type="text" id="ApiLimit" value="10" size="3"></label>
+        </div>
+        <div>
+            <b>ラベルのマッチ項目設定(完全一致検索、前方一致検索のどちらかを選択した時のみ)</b>:<br>
+            <label>
+                <input type="radio" id="labelPriority" name="selectMatchLabelType" value="labelpriority" checked>ラベル名優先
+            </label><br>
+            <label><input type="radio" id="labelOnly" name="selectMatchLabelType" value="label">ラベル名のみ</label><br>
+            <label><input type="radio" id="aliasOnly" name="selectMatchLabelType" value="alias">別名のみ</label>
+        </div>
+        <div>
+            <b>品詞の選択</b>:<br>
+            <label>
+                <input type="radio" id="properNounOnly" name="selectNounType" value="properNounOnly">固有名詞のみ
+            </label><br>
+            <label>
+                <input type="radio" id="nounOnly" name="selectNounType" value="nounOnly">名詞のみ
+            </label><br>
+            <label>
+                <input type="radio" id="whiteList" name="selectNounType" value="whiteList">名詞ホワイトリスト
+            </label><br>
+            <input type="text" id="whiteListValue" size="40" value="固有名詞,一般,サ変接続"><br>
+            <label>
+                <input type="radio" id="blackList" name="selectNounType" value="blackList" checked>名詞ブラックリスト</label><br>
+            <input type="text" id="blackListValue" size="40" value="接続詞的,代名詞,非自立,特殊,形容動詞語幹">
+        </div>
+        <div>
+            <b>NGワード</b><br>
+            <input type="text" id="NgWords" size="40" value="[,],][,]、,:,(,),注,.,_,英,&quot;"><br>
+        </div>
+        <div>
+            <b>リンク先表示方法</b><br>
+            <label><input type="radio" id="kgs" name="SelectTargetKnowledgeGraph" value="kgs"
+                    checked>KGSearchForWD</label><br>
+            <label><input type="radio" id="wikidata" name="SelectTargetKnowledgeGraph" value="wikidata">wikidata</label>
+        </div>
+    </details>
+    <textarea name="" id="inputText" cols="30" rows="10">デフォルトテキストだよ～</textarea>
+    <button id="startButton">EL Start!</button>
+    <script type="module">
+        import entityLinking from './index.js'
+        const startButton = document.getElementById('startButton');
+        startButton.addEventListener("click", () => {
+            const inputText = document.getElementById('inputText').value;
+            const settingObj = {
+                //API検索時の検索数上限
+                'ApiLimit': document.getElementById('ApiLimit'),
+                //単語の検索方法（完全一致、前方一致、あいまい検索)
+                'searchType': getCheckedRadioButton('selectSearchType'),
+                //検索されるラベルのタイプ（ラベル名優先、ラベル名のみ、別名のみ）
+                'selectMatchLabelType': getCheckedRadioButton('selectMatchLabelType'),
+                //エンティティリンキングの対象とする名詞の種類
+                'selectNounType': getCheckedRadioButton('selectNounType'),
+                //ホワイトリスト、ブラックリストの内容
+                'whiteList': document.getElementById('whiteList').value,
+                'blackList': document.getElementById('blackList').value,
+                //NGワード
+                'NgWords': document.getElementById('NgWords').value,
+                //エンティティリンキングの対象
+                'linkingTarget': getCheckedRadioButton('SelectTargetKnowledgeGraph')
+            }
+            console.log(settingObj)
+            const entityLinkedText = entityLinking(inputText, settingObj);
+            console.log(entityLinkedText)
+        }, false);
+    </script>
+</body>
+
+</html>
