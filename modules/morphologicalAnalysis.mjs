@@ -1,3 +1,16 @@
+/*
+morphologicalAnalysis関数は、以下の配列を返します
+[
+    {
+        'word_position': (Number),     // 単語開始位置
+        'surface_form': (String),      // 表層形
+        'pos': (String),               // 品詞
+        'pos_detail_1': (String),      // 品詞細分類1
+        'pos_detail_2': (String),      // 品詞細分類2
+        'pos_detail_3': (String),      // 品詞細分類3
+    }
+]
+*/
 export default async function morphologicalAnalysis(inputText) {
     const DICT_PATH = "../libs/kuromoji/dict";
 
@@ -5,7 +18,16 @@ export default async function morphologicalAnalysis(inputText) {
         kuromoji.builder({ dicPath: DICT_PATH }).build((err, tokenizer) => {
             console.log(err);
             const tokens = tokenizer.tokenize(inputText);// 解析データの取得
-            return resolve(tokens);
+            return resolve(tokens.map(token => {
+                return {
+                    'word_position': token.word_position,
+                    'surface_form':  token.surface_form,
+                    'pos': token.pos,
+                    'pos_detail_1': token.pos_detail_1,
+                    'pos_detail_2': token.pos_detail_2,
+                    'pos_detail_3': token.pos_detail_3
+                }
+            }));
         });
     });
 }
