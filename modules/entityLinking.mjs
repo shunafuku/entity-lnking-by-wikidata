@@ -1,19 +1,23 @@
-import morphologicalAnalysis from "./morphologicalAnalysis.mjs";
+import morphologicalAnalysis from './morphologicalAnalysis.mjs';
+import EntityLinkingCandidateSearcher from './search.mjs'
 
 export default async function entityLinking(inputText, settingObj) {
   //形態素解析
   const morphologicalAnalysisResultArray = await morphologicalAnalysis(inputText);
   console.log(morphologicalAnalysisResultArray)
-  //mediawiki_API 前方一致(検索ワード,結果取得上限数)
-  async function promise_get_action_wbsearchentities(word, limit) {
-    return new Promise((resolve) => {
-      const urlw = "https://www.wikidata.org/w/api.php?action=wbsearchentities&search=" + word + "&limit=" + limit + "&language=ja&format=json&origin=*";
-      fetch(urlw)
-        .then(function (response) { return resolve(response.json()); })
-        .catch(function (error) { console.log(error); });
-    })
+  //検索
+  const searcher = new EntityLinkingCandidateSearcher('ネコ', 10);
+  if(settingObj.searchType == 'exactMatchSearch'){
+    const neko = await searcher.exactMatchSearch();
+    console.log(neko)
+  }else if(settingObj.searchType == 'prefixSearch'){
+    const neko = await searcher.prefixSearch();
+    console.log(neko)
+  }else if(settingObj.searchType == 'approximateSearch'){
+    const neko = await searcher.approximateSearch();
+    console.log(neko)
   }
-  console.log(await promise_get_action_wbsearchentities('ネコ', 10))
+
 
   //リンキングテキスト
   const entityLinkedText = ''

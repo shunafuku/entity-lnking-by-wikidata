@@ -6,9 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
     <script>
-      function add(a, b){
-        return a + b;
-      }
       function getCheckedRadioButton(name) {
         const radioButtonElements = document.getElementsByName(name);
         const count = radioButtonElements.length;
@@ -31,26 +28,26 @@
         <label
           ><input
             type="radio"
-            id="exactMatch"
+            id="exactMatchSearch"
             name="selectSearchType"
-            value="Full"
+            value="exactMatchSearch"
             checked
-          />完全一致</label
+          />完全一致検索</label
         ><br />
         <label
           ><input
             type="radio"
-            id="prefixMatch"
+            id="prefixSearch"
             name="selectSearchType"
-            value="forward"
-          />前方一致</label
+            value="prefixSearch"
+          />前方一致検索</label
         ><br />
         <label
           ><input
             type="radio"
-            id="fuzzySearch"
+            id="approximateSearch"
             name="selectSearchType"
-            value="ambi"
+            value="approximateSearch"
           />あいまい検索</label
         ><br />
         <label
