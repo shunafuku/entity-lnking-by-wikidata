@@ -21,7 +21,7 @@ function createLinkedText(textArray, displayPage){
         return x['word']
       }else{
         const kgsLink =  "'https://kgs.hozo.jp/sample/details.html?key=wd:" + x['linkedEntity']['id'] + "'"
-        return '<a ' + 'href="javascript:ShowDetails(' + kgsLink + ')"' + '>' + x['word'] + '</a> '
+        return '<a ' + 'href="javascript:ShowDetails(' + kgsLink + ')"' + '>' + x['word'] + '</a>' + ' '
       }
     }).join('')
   }else{
@@ -29,7 +29,7 @@ function createLinkedText(textArray, displayPage){
       if(x['linkedEntity'] == null){
         return x['word']
       }else{
-        return '<a ' + 'href="' + x['linkedEntity']['wikidataUrl'] + '" ' + 'target="_blank" rel="noopener noreferrer" ' + '>' + x['word'] + '</a> '
+        return '<a ' + 'href="' + x['linkedEntity']['wikidataUrl'] + '" ' + 'target="_blank" rel="noopener noreferrer" ' + '>' + x['word'] + '</a>' + ' '
       }
     }).join('')
   }
