@@ -1,208 +1,154 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-    <script>
-      function getCheckedRadioButton(name) {
-        const radioButtonElements = document.getElementsByName(name);
-        const count = radioButtonElements.length;
-        console.log();
-        for (let i = 0; i < count; i++) {
-          if (radioButtonElements.item(i).checked) {
-            return radioButtonElements.item(i).value;
-          }
+<html lang="jp">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+  <script>
+    const exampleSentences = [
+      'オキシトシン（OXT）は、視床下部で産生される神経ペプチドです。OXT産生ニューロンは軸索を神経下垂体後葉、つまり下垂体後葉に投射し、ペプチドホルモンとして末梢的にOXTを血液循環に放出します。これらのニューロンはまた、いくつかの脳領域を神経支配し、そこで神経ペプチドとしてOXTを放出します。したがって、OXTは、子宮収縮や授乳などの末梢性機能だけでなく、社会的、攻撃的、恐怖、母性行動などの中枢性機能の調節にも関与しています。',
+      '日本国（にほんこく、にっぽんこく、英: Japan）、または日本（にほん、にっぽん）は、東アジアに位置する民主制国家[1]。首都は東京都[注 2][2][3]。全長3500キロメートル以上にわたる国土は、主に日本列島[注 6]および千島列島・南西諸島・伊豆諸島・小笠原諸島などの弧状列島により構成され[3][4]、大部分が温帯に属するが、北部や島嶼部では亜寒帯や熱帯の地域がある[5][6]。地形は起伏に富み、火山地・丘陵を含む山地の面積は国土の約75 % を占め[6]、沿岸の平野部に人口が集中している。国内には行政区分として47の都道府県があり、日本人（大和民族・琉球民族・アイヌ民族[注 7]・外国系の人々）と外国人が居住し、日本語を通用する[2][3]。',
+      '養殖業（ようしょくぎょう、英語: aquaculture）とは、生物を、その本体または副生成物を食品や工業製品などとして利用することを目的として、人工的に育てる産業である。金魚、錦鯉などを鑑賞・愛玩目的で育てることは「養魚」と称する場合が多い[1]。狭義及び通常は、水産業（養殖漁業）の一種で、魚介類や海藻などの水棲生物の人為的繁殖について使われる。広義には、生物全般を育てることを指すが、陸生植物に関しては栽培・農耕、哺乳類に関しては畜産、そのうち乳牛などは酪農、ニワトリに関しては養鶏、ブタは養豚という用語がある。'
+    ]
+    function setExampleSentence(number) {
+      document.getElementById('inputText').value = exampleSentences[number - 1];
+    }
+  </script>
+  <script>
+    function getCheckedRadioButton(name) {
+      const radioButtonElements = document.getElementsByName(name);
+      const count = radioButtonElements.length;
+      console.log();
+      for (let i = 0; i < count; i++) {
+        if (radioButtonElements.item(i).checked) {
+          return radioButtonElements.item(i).value;
         }
       }
-    </script>
-  </head>
+    }
+    function ShowDetails(page) {
+      let lw = window.innerWidth - 400;
+      let y = window.screenY + 100;
 
-  <body>
-    <h1>wikidataを対象としたEntityLinkingシステム</h1>
-    <details>
-      <summary><b>詳細設定</b></summary>
-      <div>
-        <b>ラベルの検索設定</b>:<br />
-        <label
-          ><input
-            type="radio"
-            id="exactMatchSearch"
-            name="selectSearchType"
-            value="exactMatchSearch"
-            checked
-          />完全一致検索</label
-        ><br />
-        <label
-          ><input
-            type="radio"
-            id="prefixSearch"
-            name="selectSearchType"
-            value="prefixSearch"
-          />前方一致検索</label
-        ><br />
-        <label
-          ><input
-            type="radio"
-            id="approximateSearch"
-            name="selectSearchType"
-            value="approximateSearch"
-          />あいまい検索</label
-        ><br />
-        <label
-          >ラベル取得上限数
-          <input type="text" id="ApiLimit" value="10" size="3"
-        /></label>
-      </div>
-      <div>
-        <b
-          >ラベルのマッチ項目設定(完全一致検索、前方一致検索のどちらかを選択した時のみ)</b
-        >:<br />
-        <label>
-          <input
-            type="radio"
-            id="labelPriority"
-            name="selectMatchLabelType"
-            value="labelpriority"
-            checked
-          />ラベル名優先 </label
-        ><br />
-        <label
-          ><input
-            type="radio"
-            id="labelOnly"
-            name="selectMatchLabelType"
-            value="label"
-          />ラベル名のみ</label
-        ><br />
-        <label
-          ><input
-            type="radio"
-            id="aliasOnly"
-            name="selectMatchLabelType"
-            value="alias"
-          />別名のみ</label
-        >
-      </div>
-      <div>
-        <b>品詞の選択</b>:<br />
-        <label>
-          <input
-            type="radio"
-            id="properNounOnly"
-            name="selectNounType"
-            value="properNounOnly"
-          />固有名詞のみ </label
-        ><br />
-        <label>
-          <input
-            type="radio"
-            id="nounOnly"
-            name="selectNounType"
-            value="nounOnly"
-          />名詞のみ </label
-        ><br />
-        <label>
-          <input
-            type="radio"
-            id="whiteList"
-            name="selectNounType"
-            value="whiteList"
-          />名詞ホワイトリスト </label
-        ><br />
-        <input
-          type="text"
-          id="whiteListValue"
-          size="40"
-          value="固有名詞,一般,サ変接続"
-        /><br />
-        <label>
-          <input
-            type="radio"
-            id="blackList"
-            name="selectNounType"
-            value="blackList"
-            checked
-          />名詞ブラックリスト</label
-        ><br />
-        <input
-          type="text"
-          id="blackListValue"
-          size="40"
-          value="接続詞的,代名詞,非自立,特殊,形容動詞語幹"
-        />
-      </div>
-      <div>
-        <b>NGワード</b><br />
-        <input
-          type="text"
-          id="NgWords"
-          size="40"
-          value='[,],][,]、,:,(,),注,.,_,英,"'
-        /><br />
-      </div>
-      <div>
-        <b>リンク先表示方法</b><br />
-        <label
-          ><input
-            type="radio"
-            id="kgs"
-            name="SelectTargetKnowledgeGraph"
-            value="kgs"
-            checked
-          />KGSearchForWD</label
-        ><br />
-        <label
-          ><input
-            type="radio"
-            id="wikidata"
-            name="SelectTargetKnowledgeGraph"
-            value="wikidata"
-          />wikidata</label
-        >
-      </div>
-    </details>
-    <textarea name="" id="inputText" cols="30" rows="10">
-デフォルトテキストだよ～</textarea
-    >
-    <button id="startButton">EL Start!</button>
-    <script type="module">
-      import entityLinking from "./modules/entityLinking.mjs";
-      window.addEventListener("DOMContentLoaded", () => {
-        const startButton = document.getElementById("startButton");
-        startButton.addEventListener(
-          "click",
-          () => {
-            const inputText = document.getElementById("inputText").value;
-            const settingObj = {
-              //API検索時の検索数上限
-              ApiLimit: document.getElementById("ApiLimit"),
-              //単語の検索方法（完全一致、前方一致、あいまい検索)
-              searchType: getCheckedRadioButton("selectSearchType"),
-              //検索されるラベルのタイプ（ラベル名優先、ラベル名のみ、別名のみ）
-              selectMatchLabelType: getCheckedRadioButton(
-                "selectMatchLabelType"
-              ),
-              //エンティティリンキングの対象とする名詞の種類
-              selectNounType: getCheckedRadioButton("selectNounType"),
-              //ホワイトリスト、ブラックリストの内容
-              whiteList: document.getElementById("whiteList").value,
-              blackList: document.getElementById("blackList").value,
-              //NGワード
-              NgWords: document.getElementById("NgWords").value,
-              //エンティティリンキングの対象
-              linkingTarget: getCheckedRadioButton(
-                "SelectTargetKnowledgeGraph"
-              ),
-            };
-            console.log(settingObj);
-            const entityLinkedText = entityLinking(inputText, settingObj);
-            console.log(entityLinkedText);
-          },
-          false
-        );
-      });
-    </script>
-  </body>
+      if (lw < 0) {
+        lw = 100;
+      }
+      window.open(
+        page,
+        "DetailsWin",
+        "left=" + lw + ",top=" + y + ",width=400,height=600,scrollbars=1"
+      );
+    }
+
+  </script>
+</head>
+
+<body>
+  <h1>wikidataを対象としたEntityLinkingシステム</h1>
+  <h2>リンキングしたい文章</h2>
+  <textarea name="" id="inputText" cols="60" rows="15"></textarea>
+  <button id="startButton">EL Start!</button>
+  <hr>
+  <div>
+    <button id="exampleSentence1" onclick="setExampleSentence(1)">例文1</button>
+    <button id="exampleSentence2" onclick="setExampleSentence(2)">例文2</button>
+    <button id="exampleSentence3" onclick="setExampleSentence(3)">例文3</button>
+  </div>
+  <details>
+    <summary><b>詳細設定</b></summary>
+    <div>
+      <b>ラベルの検索設定</b>:<br />
+      <label><input type="radio" id="exactMatchSearch" name="selectSearchType" value="exactMatchSearch"
+          checked />完全一致検索</label><br />
+      <label><input type="radio" id="prefixSearch" name="selectSearchType" value="prefixSearch" />前方一致検索</label><br />
+      <label><input type="radio" id="approximateSearch" name="selectSearchType"
+          value="approximateSearch" />あいまい検索</label><br />
+      <label>ラベル取得上限数
+        <input type="text" id="apiLimit" value="10" size="3" /></label>
+    </div>
+    <div>
+      <b>ラベルのマッチ項目設定(完全一致検索、前方一致検索のどちらかを選択した時のみ)</b>:<br />
+      <label>
+        <input type="radio" id="labelPriority" name="selectMatchLabelType" value="labelpriority" checked />ラベル名優先
+      </label><br />
+      <label><input type="radio" id="labelOnly" name="selectMatchLabelType" value="label" />ラベル名のみ</label><br />
+      <label><input type="radio" id="aliasOnly" name="selectMatchLabelType" value="alias" />別名のみ</label>
+    </div>
+    <div>
+      <b>品詞の選択</b>:<br />
+      <label>
+        <input type="radio" id="properNounOnly" name="selectNounType" value="properNounOnly" />固有名詞のみ </label><br />
+      <label>
+        <input type="radio" id="nounOnly" name="selectNounType" value="nounOnly" />名詞のみ </label><br />
+      <label>
+        <input type="radio" id="whiteList" name="selectNounType" value="whiteList" />名詞ホワイトリスト </label><br />
+      <input type="text" id="whiteListValue" size="40" value="固有名詞,一般,サ変接続" /><br />
+      <label>
+        <input type="radio" id="blackList" name="selectNounType" value="blackList" checked />名詞ブラックリスト</label><br />
+      <input type="text" id="blackListValue" size="40" value="接続詞的,代名詞,非自立,特殊,形容動詞語幹" />
+    </div>
+    <div>
+      <b>NGワード</b><br />
+      <input type="text" id="NgWords" size="40" value='[,],][,]、,:,(,),注,.,_,英,"' /><br />
+    </div>
+    <div>
+      <b>リンク先表示方法</b><br />
+      <label><input type="radio" id="kgs" name="SelectTargetKnowledgeGraph" value="kgs"
+          checked />KGSearchForWD</label><br />
+      <label><input type="radio" id="wikidata" name="SelectTargetKnowledgeGraph" value="wikidata" />wikidata</label>
+    </div>
+  </details>
+  <hr>
+  
+  <div id="outputDiv">
+    <h2>リンキングテキスト</h2>
+    <p id="outputP"></p>
+  </div>
+
+  <script type="module">
+    import entityLinking from "./modules/entityLinking.mjs";
+    window.addEventListener("DOMContentLoaded", () => {
+      const startButton = document.getElementById("startButton");
+      startButton.addEventListener(
+        "click",
+        async () => {
+          //入力テキストの取得
+          const inputText = document.getElementById("inputText").value;
+          const settingObj = {
+            //API検索時の検索数上限
+            apiLimit: document.getElementById("apiLimit").value,
+            //単語の検索方法（完全一致、前方一致、あいまい検索)
+            searchType: getCheckedRadioButton("selectSearchType"),
+            //検索されるラベルのタイプ（ラベル名優先、ラベル名のみ、別名のみ）
+            selectMatchLabelType: getCheckedRadioButton(
+              "selectMatchLabelType"
+            ),
+            //エンティティリンキングの対象とする名詞の種類
+            selectNounType: getCheckedRadioButton("selectNounType"),
+            //ホワイトリスト、ブラックリストの内容
+            whiteList: document.getElementById("whiteList").value,
+            blackList: document.getElementById("blackList").value,
+            //NGワード
+            NgWords: document.getElementById("NgWords").value,
+            //エンティティ表示先
+            displayPage: getCheckedRadioButton(
+              "SelectTargetKnowledgeGraph"
+            ),
+          };
+          console.log(settingObj);
+
+          //エンティティリンキング実行
+          const entityLinkedText = await entityLinking(inputText, settingObj);
+          console.log(entityLinkedText);
+
+          //テキストの出力
+          document.getElementById('outputP').innerHTML = entityLinkedText;
+        },
+        false
+      );
+    });
+  </script>
+</body>
+
 </html>
