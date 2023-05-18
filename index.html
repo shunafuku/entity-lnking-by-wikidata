@@ -6,6 +6,8 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Document</title>
+  <link rel="stylesheet" href="./styles/main.css">
+  <link rel="stylesheet" href="./styles/category.css">
   <script>
     const exampleSentences = [
       'オキシトシン（OXT）は、視床下部で産生される神経ペプチドです。OXT産生ニューロンは軸索を神経下垂体後葉、つまり下垂体後葉に投射し、ペプチドホルモンとして末梢的にOXTを血液循環に放出します。これらのニューロンはまた、いくつかの脳領域を神経支配し、そこで神経ペプチドとしてOXTを放出します。したがって、OXTは、子宮収縮や授乳などの末梢性機能だけでなく、社会的、攻撃的、恐怖、母性行動などの中枢性機能の調節にも関与しています。',
@@ -46,59 +48,80 @@
 
 <body>
   <h1>wikidataを対象としたEntityLinkingシステム</h1>
-  <h2>リンキングしたい文章</h2>
-  <textarea name="" id="inputText" cols="60" rows="15"></textarea>
-  <button id="startButton">EL Start!</button>
-  <hr>
-  <div>
-    <button id="exampleSentence1" onclick="setExampleSentence(1)">例文1</button>
-    <button id="exampleSentence2" onclick="setExampleSentence(2)">例文2</button>
-    <button id="exampleSentence3" onclick="setExampleSentence(3)">例文3</button>
+  <div class="input-area">
+    <div class="category-checkboxes">
+      <h2>カテゴリー選択</h2>
+      <label for="category-0" class="category-label category-0"><input type="checkbox" id="category-0" name="category-0">活動</label>
+      <label for="category-1" class="category-label category-1"><input type="checkbox" id="category-1" name="category-1">解剖学的構造</label>
+      <label for="category-2" class="category-label category-2"><input type="checkbox" id="category-2" name="category-2">疾患</label>
+      <label for="category-3" class="category-label category-3"><input type="checkbox" id="category-3" name="category-3">薬</label>
+      <label for="category-4" class="category-label category-4"><input type="checkbox" id="category-4" name="category-4">組織</label>
+      <label for="category-5" class="category-label category-5"><input type="checkbox" id="category-5" name="category-5">人物</label>
+      <label for="category-6" class="category-label category-6"><input type="checkbox" id="category-6" name="category-6">場所</label>
+      <label for="category-7" class="category-label category-7"><input type="checkbox" id="category-7" name="category-7">化学物質</label>
+      <label for="category-8" class="category-label category-8"><input type="checkbox" id="category-8" name="category-8">生物</label>
+      <label for="category-9" class="category-label category-9"><input type="checkbox" id="category-9" name="category-9">仕事</label>
+    </div>
+    <div class="grid-middle">
+      <h2>リンキングしたい文章</h2>
+      <div>
+        <button id="exampleSentence1" onclick="setExampleSentence(1)">例文1</button>
+        <button id="exampleSentence2" onclick="setExampleSentence(2)">例文2</button>
+        <button id="exampleSentence3" onclick="setExampleSentence(3)">例文3</button>
+      </div>
+      <textarea name="" id="inputText" cols="60" rows="15"></textarea>
+      <button id="startButton">EL Start!</button>
+      <hr>
+
+      <details>
+        <summary><b>詳細設定</b></summary>
+        <div>
+          <b>ラベルの検索設定</b>:<br />
+          <label><input type="radio" id="exactMatchSearch" name="selectSearchType" value="exactMatchSearch"
+              checked />完全一致検索</label><br />
+          <label><input type="radio" id="prefixSearch" name="selectSearchType" value="prefixSearch" />前方一致検索</label><br />
+          <label><input type="radio" id="approximateSearch" name="selectSearchType"
+              value="approximateSearch" />あいまい検索</label><br />
+          <label>ラベル取得上限数
+            <input type="text" id="apiLimit" value="10" size="3" /></label>
+        </div>
+        <div>
+          <b>ラベルのマッチ項目設定(完全一致検索、前方一致検索のどちらかを選択した時のみ)</b>:<br />
+          <label>
+            <input type="radio" id="labelPriority" name="selectMatchLabelType" value="labelpriority" checked />ラベル名優先
+          </label><br />
+          <label><input type="radio" id="labelOnly" name="selectMatchLabelType" value="label" />ラベル名のみ</label><br />
+          <label><input type="radio" id="aliasOnly" name="selectMatchLabelType" value="alias" />別名のみ</label>
+        </div>
+        <div>
+          <b>品詞の選択</b>:<br />
+          <label>
+            <input type="radio" id="properNounOnly" name="selectNounType" value="properNounOnly" />固有名詞のみ </label><br />
+          <label>
+            <input type="radio" id="nounOnly" name="selectNounType" value="nounOnly" />名詞のみ </label><br />
+          <label>
+            <input type="radio" id="whiteList" name="selectNounType" value="whiteList" />名詞ホワイトリスト </label><br />
+          <input type="text" id="whiteListValue" size="40" value="固有名詞,一般,サ変接続" /><br />
+          <label>
+            <input type="radio" id="blackList" name="selectNounType" value="blackList" checked />名詞ブラックリスト</label><br />
+          <input type="text" id="blackListValue" size="40" value="接続詞的,代名詞,非自立,特殊,形容動詞語幹" />
+        </div>
+        <div>
+          <b>NGワード</b><br />
+          <input type="text" id="ngWords" size="40" value='[,],][,]、,:,(,),注,.,_,英,"' /><br />
+        </div>
+        <div>
+          <b>リンク先表示方法</b><br />
+          <label><input type="radio" id="kgs" name="SelectTargetKnowledgeGraph" value="kgs"
+              checked />KGSearchForWD</label><br />
+          <label><input type="radio" id="wikidata" name="SelectTargetKnowledgeGraph" value="wikidata" />wikidata</label>
+        </div>
+      </details>
+    </div>
   </div>
-  <details>
-    <summary><b>詳細設定</b></summary>
-    <div>
-      <b>ラベルの検索設定</b>:<br />
-      <label><input type="radio" id="exactMatchSearch" name="selectSearchType" value="exactMatchSearch"
-          checked />完全一致検索</label><br />
-      <label><input type="radio" id="prefixSearch" name="selectSearchType" value="prefixSearch" />前方一致検索</label><br />
-      <label><input type="radio" id="approximateSearch" name="selectSearchType"
-          value="approximateSearch" />あいまい検索</label><br />
-      <label>ラベル取得上限数
-        <input type="text" id="apiLimit" value="10" size="3" /></label>
-    </div>
-    <div>
-      <b>ラベルのマッチ項目設定(完全一致検索、前方一致検索のどちらかを選択した時のみ)</b>:<br />
-      <label>
-        <input type="radio" id="labelPriority" name="selectMatchLabelType" value="labelpriority" checked />ラベル名優先
-      </label><br />
-      <label><input type="radio" id="labelOnly" name="selectMatchLabelType" value="label" />ラベル名のみ</label><br />
-      <label><input type="radio" id="aliasOnly" name="selectMatchLabelType" value="alias" />別名のみ</label>
-    </div>
-    <div>
-      <b>品詞の選択</b>:<br />
-      <label>
-        <input type="radio" id="properNounOnly" name="selectNounType" value="properNounOnly" />固有名詞のみ </label><br />
-      <label>
-        <input type="radio" id="nounOnly" name="selectNounType" value="nounOnly" />名詞のみ </label><br />
-      <label>
-        <input type="radio" id="whiteList" name="selectNounType" value="whiteList" />名詞ホワイトリスト </label><br />
-      <input type="text" id="whiteListValue" size="40" value="固有名詞,一般,サ変接続" /><br />
-      <label>
-        <input type="radio" id="blackList" name="selectNounType" value="blackList" checked />名詞ブラックリスト</label><br />
-      <input type="text" id="blackListValue" size="40" value="接続詞的,代名詞,非自立,特殊,形容動詞語幹" />
-    </div>
-    <div>
-      <b>NGワード</b><br />
-      <input type="text" id="NgWords" size="40" value='[,],][,]、,:,(,),注,.,_,英,"' /><br />
-    </div>
-    <div>
-      <b>リンク先表示方法</b><br />
-      <label><input type="radio" id="kgs" name="SelectTargetKnowledgeGraph" value="kgs"
-          checked />KGSearchForWD</label><br />
-      <label><input type="radio" id="wikidata" name="SelectTargetKnowledgeGraph" value="wikidata" />wikidata</label>
-    </div>
-  </details>
+  
+  
+  
   <hr>
   
   <div id="outputDiv">
@@ -127,10 +150,10 @@
             //エンティティリンキングの対象とする名詞の種類
             selectNounType: getCheckedRadioButton("selectNounType"),
             //ホワイトリスト、ブラックリストの内容
-            whiteList: document.getElementById("whiteList").value,
-            blackList: document.getElementById("blackList").value,
+            whiteList: document.getElementById("whiteListValue").value.split(','),
+            blackList: document.getElementById("blackListValue").value.split(','),
             //NGワード
-            NgWords: document.getElementById("NgWords").value,
+            ngWords: document.getElementById("ngWords").value.split(','),
             //エンティティ表示先
             displayPage: getCheckedRadioButton(
               "SelectTargetKnowledgeGraph"

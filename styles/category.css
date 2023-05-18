@@ -1,0 +1,52 @@
+:root {
+    --category-color-0: rgb(255, 143, 143);
+    --category-color-1: rgb(220, 220, 220);
+    --category-color-2: rgb(117, 214, 161);
+    --category-color-3: rgb(255, 255, 0);
+    --category-color-4: rgb(204, 179, 255);
+    --category-color-5: rgb(255, 165, 0);
+    --category-color-6: rgb(255, 218, 185);
+    --category-color-7: rgb(0, 255, 255);
+    --category-color-8: rgb(0, 255, 0);
+    --category-color-9: rgb(255, 192, 203);
+}
+
+.category-0 {
+    background-color: var(--category-color-0);
+}
+
+.category-1 {
+    background-color: var(--category-color-1);
+}
+
+.category-2 {
+    background-color: var(--category-color-2);
+}
+
+.category-3 {
+    background-color: var(--category-color-3);
+}
+
+.category-4 {
+    background-color: var(--category-color-4);
+}
+
+.category-5 {
+    background-color: var(--category-color-5);
+}
+
+.category-6 {
+    background-color: var(--category-color-6);
+}
+
+.category-7 {
+    background-color: var(--category-color-7);
+}
+
+.category-8 {
+    background-color: var(--category-color-8);
+}
+
+.category-9 {
+    background-color: var(--category-color-9);
+}

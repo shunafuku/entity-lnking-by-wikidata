@@ -3,7 +3,8 @@
 前方一致検索 - mediawiki_API(https://www.wikidata.org/w/api.php?action=help&modules=wbsearchentities)
 あいまい検索 - mediawiki_API(https://www.mediawiki.org/w/api.php?action=help&modules=query%2Bsearch)
 */
-export default class EntityCandidateSearcher {
+
+class EntityCandidateSearcher {
     constructor(searchWord, apiLimit) {
         this.searchWord = searchWord;
         this.apiLimit = apiLimit;
@@ -22,7 +23,7 @@ export default class EntityCandidateSearcher {
                         }
                     }))
                 })
-                .catch(function (error) { console.log(error); });
+                .catch((error) => { console.log(error); });
         })
     }
 
@@ -40,7 +41,7 @@ export default class EntityCandidateSearcher {
                         }
                     }))
                 })
-                .catch(function (error) { console.log(error); });
+                .catch((error) => { console.log(error); });
         })
     }
 
@@ -49,9 +50,32 @@ export default class EntityCandidateSearcher {
         return new Promise((resolve) => {
             const urlw = "https://www.wikidata.org/w/api.php?action=query&list=search&srsearch=" + this.searchWord + "&srlimit=" + this.apiLimit + "&sroffset=0&format=json&origin=*";
             fetch(urlw)
-                .then(function (response) { return resolve(response.json()); })
+                .then((response) => response.json())
+                .then((searchResult) => {
+                    console.log('searchResult');
+                    console.log(searchResult);
+                    return resolve(searchResult['query']['search'].map(x => {
+                        return {
+                            wikidataUrl: 'http://www.wikidata.org/wiki/' + x['title'],
+                            id: x['title']
+                        }
+                    }))
+                })
                 .catch(function (error) { console.log(error); });
         })
     }
 
+}
+
+export default async function entityCandidateSearch(word, settingObj) {
+    const searcher = new EntityCandidateSearcher(word, settingObj.apiLimit);
+    let result;
+    if (settingObj.searchType == 'exactMatchSearch') {
+        result = await searcher.exactMatchSearch();
+    } else if (settingObj.searchType == 'prefixSearch') {
+        result = await searcher.prefixSearch();
+    } else if (settingObj.searchType == 'approximateSearch') {
+        result = await searcher.approximateSearch();
+    }
+    return result;
 }

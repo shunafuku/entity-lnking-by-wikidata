@@ -1,0 +1,13 @@
+.input-area {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+}
+
+.category-checkboxes {
+    display: flex;
+    flex-flow: column;
+}
+
+.category-label {
+    width: 8rem;
+}
