@@ -3,66 +3,69 @@ import entityCandidateSearch from './entitySearch.mjs';
 import EntityDecider from './entityDecide.mjs';
 import fetchCategory from './category.mjs';
 
-const category = {
-  "category-0":{
-      "value":"活動",
-      "color":"255, 143, 143",
-      "wikidataId":"Q1914636"
-  },
-  "category-1":{
-      "value":"解剖学的構造",
-      "color":"220, 220, 220",
-      "wikidataId":"Q112826905"
-  },
-  "category-2":{
-      "value":"疾患",
-      "color":"117, 214, 161",
-      "wikidataId":"Q12136"
-  },
-  "category-3":{
-      "value":"薬",
-      "color":"255, 255, 0",
-      "wikidataId":"Q8386"
-  },
-  "category-4":{
-      "value":"組織",
-      "color":"204, 179, 255",
-      "wikidataId":"Q43229"
-  },
-  "category-5":{
-      "value":"人物",
-      "color":"255, 165, 0",
-      "wikidataId":"Q5"
-  },
-  "category-6":{
-      "value":"場所",
-      "color":"255, 218, 185",
-      "wikidataId":"Q17334923"
-  },
-  "category-7":{
-      "value":"化学物質",
-      "color":"0, 255, 255",
-      "wikidataId":"Q79529"
-  },
-  "category-8":{
-      "value":"生物",
-      "color":"0, 255, 0",
-      "wikidataId":"Q7239"
-  },
-  "category-9":{
-      "value":"仕事",
-      "color":"255, 192, 203",
-      "wikidataId":"Q386724 "
+
+function getCategoryClass(categoryArray, selectCategories){
+  const category = {
+    "category-0":{
+        "value":"活動",
+        "color":"255, 143, 143",
+        "wikidataId":"Q1914636"
+    },
+    "category-1":{
+        "value":"解剖学的構造",
+        "color":"220, 220, 220",
+        "wikidataId":"Q112826905"
+    },
+    "category-2":{
+        "value":"疾患",
+        "color":"117, 214, 161",
+        "wikidataId":"Q12136"
+    },
+    "category-3":{
+        "value":"薬",
+        "color":"255, 255, 0",
+        "wikidataId":"Q8386"
+    },
+    "category-4":{
+        "value":"組織",
+        "color":"204, 179, 255",
+        "wikidataId":"Q43229"
+    },
+    "category-5":{
+        "value":"人物",
+        "color":"255, 165, 0",
+        "wikidataId":"Q5"
+    },
+    "category-6":{
+        "value":"場所",
+        "color":"255, 218, 185",
+        "wikidataId":"Q17334923"
+    },
+    "category-7":{
+        "value":"化学物質",
+        "color":"0, 255, 255",
+        "wikidataId":"Q79529"
+    },
+    "category-8":{
+        "value":"生物",
+        "color":"0, 255, 0",
+        "wikidataId":"Q7239"
+    },
+    "category-9":{
+        "value":"仕事",
+        "color":"255, 192, 203",
+        "wikidataId":"Q386724 "
+    }
   }
-}
-function getCategoryClass(categoryArray){
-  if(categoryArray.indexOf("Q8386") != -1){
-    return "category-3"
+  for(const checkedCategory of selectCategories){
+    if(categoryArray.indexOf(category[checkedCategory]['wikidataId']) != -1){
+      return checkedCategory
+    }
   }
   return ""
 }
 
-function createLinkedText(textArray, displayPage){
+function createLinkedText(textArray, selectCategories, displayPage){
   if(displayPage == 'kgs'){
     return textArray.map(x => {
       if(x['linkedEntity'] == null){
@@ -70,8 +73,10 @@ function createLinkedText(textArray, displayPage){
       }else{
         const wikidataId = x['linkedEntity']['id'];
         const categoryArray = x['category'];
+        const categoryClass = getCategoryClass(categoryArray, selectCategories);
+        console.log(categoryClass);
         const kgsLink =  "'https://kgs.hozo.jp/sample/details.html?key=wd:" + x['linkedEntity']['id'] + "'"
-        return '<a ' + 'class="' + getCategoryClass(categoryArray) + '" ' + 'href="javascript:ShowDetails(' + kgsLink + ')"' + '>' + x['word'] + '</a>' + ' '
+        return '<a ' + 'class="' + categoryClass + '" ' + 'href="javascript:ShowDetails(' + kgsLink + ')"' + '>' + x['word'] + '</a>' + ' '
       }
     }).join('')
   }else{
@@ -89,7 +94,6 @@ function removeDuplicates(linkedArray){
   let appearedcombinationList = [];
   linkedArray.map(
     x => {
-      
       if(x['linkedEntity'] != null){
         console.log(x)
         if(appearedcombinationList.indexOf(x['linkedEntity']['id']) == -1){
@@ -145,12 +149,11 @@ function needsSearch(morphologicalAnalysisResult, settingObj){
   }
   return true;
 }
-function addCategory(){
-
-}
 
 //EntityLinkingを行う関数
 export default async function entityLinking(inputText, settingObj) {
+  //設定
+  console.log(settingObj);
   //形態素解析
   const morphologicalAnalysisResults = await morphologicalAnalysis(inputText);
   console.log(morphologicalAnalysisResults)
@@ -194,6 +197,6 @@ export default async function entityLinking(inputText, settingObj) {
   console.log(addCategoryResult);
 
   //リンキングテキスト生成
-  const entityLinkedText = createLinkedText(removeDuplicatesResult, settingObj['displayPage'])
+  const entityLinkedText = createLinkedText(removeDuplicatesResult, settingObj['checkedCategories'], settingObj['displayPage'])
   return entityLinkedText;
 }
