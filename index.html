@@ -31,12 +31,11 @@
       }
       function getCheckedCategories() {
         const categoryElements = document.getElementsByClassName("category");
-        return Array.prototype.filter.call(
-          categoryElements,
-          function (categoryElements) {
+        return Array.prototype.filter
+          .call(categoryElements, function (categoryElements) {
             return categoryElements.checked === true;
-          }
-        ).map(x => x.value);
+          })
+          .map((x) => x.value);
       }
       function ShowDetails(page) {
         let lw = window.innerWidth - 400;
@@ -52,9 +51,58 @@
         );
       }
     </script>
+    <style>
+      .ring {
+        --uib-size: 50px;
+        --uib-speed: 2s;
+        --uib-color: black;
+
+        height: var(--uib-size);
+        width: var(--uib-size);
+        vertical-align: middle;
+        transform-origin: center;
+        animation: rotate var(--uib-speed) linear infinite;
+      }
+
+      .ring circle {
+        fill: none;
+        stroke: var(--uib-color);
+        stroke-dasharray: 1, 200;
+        stroke-dashoffset: 0;
+        stroke-linecap: round;
+        animation: stretch calc(var(--uib-speed) * 0.75) ease-in-out infinite;
+      }
+
+      @keyframes rotate {
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+
+      @keyframes stretch {
+        0% {
+          stroke-dasharray: 1, 200;
+          stroke-dashoffset: 0;
+        }
+        50% {
+          stroke-dasharray: 90, 200;
+          stroke-dashoffset: -35px;
+        }
+        100% {
+          stroke-dashoffset: -124px;
+        }
+      }
+    </style>
   </head>
 
   <body>
+    <div id="loading" style="position: absolute; backdrop-filter: blur(12px); width: 99%; height: 99%; display: none;">
+      <div style="position: absolute;top: calc(50vh - 50px); left: calc(50vw - 50px)">
+        <svg class="ring" viewBox="25 25 50 50" stroke-width="5">
+          <circle cx="50" cy="50" r="20" />
+        </svg>
+      </div>
+    </div>
     <h1>wikidataを対象としたEntityLinkingシステム</h1>
     <div class="input-area">
       <div class="category-checkboxes">
@@ -326,6 +374,8 @@
         startButton.addEventListener(
           "click",
           async () => {
+            //loading画面出す
+            document.getElementById('loading').style.display = 'block';
             //入力テキストの取得
             const inputText = document.getElementById("inputText").value;
             const settingObj = {
@@ -340,16 +390,18 @@
               //エンティティリンキングの対象とする名詞の種類
               selectNounType: getCheckedRadioButton("selectNounType"),
               //ホワイトリスト、ブラックリストの内容
-              whiteList: document.getElementById("whiteListValue").value.split(','),
-              blackList: document.getElementById("blackListValue").value.split(','),
+              whiteList: document
+                .getElementById("whiteListValue")
+                .value.split(","),
+              blackList: document
+                .getElementById("blackListValue")
+                .value.split(","),
               //NGワード
-              ngWords: document.getElementById("ngWords").value.split(','),
+              ngWords: document.getElementById("ngWords").value.split(","),
               //エンティティ表示先
-              displayPage: getCheckedRadioButton(
-                "SelectTargetKnowledgeGraph"
-              ),
+              displayPage: getCheckedRadioButton("SelectTargetKnowledgeGraph"),
               //
-              checkedCategories: getCheckedCategories()
+              checkedCategories: getCheckedCategories(),
             };
             console.log(settingObj);
 
@@ -357,7 +409,9 @@
             const entityLinkedText = await entityLinking(inputText, settingObj);
 
             //テキストの出力
-            document.getElementById('outputP').innerHTML = entityLinkedText;
+            document.getElementById("outputP").innerHTML = entityLinkedText;
+            //loading画面消す
+            document.getElementById('loading').style.display = 'none';
           },
           false
         );
