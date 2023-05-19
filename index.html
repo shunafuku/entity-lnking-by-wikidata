@@ -219,7 +219,7 @@
                 type="radio"
                 id="labelOnly"
                 name="selectMatchLabelType"
-                value="label"
+                value="labelOnly"
               />ラベル名のみ</label
             ><br />
             <label
@@ -227,7 +227,7 @@
                 type="radio"
                 id="aliasOnly"
                 name="selectMatchLabelType"
-                value="alias"
+                value="aliasOnly"
               />別名のみ</label
             >
           </div>
@@ -355,7 +355,6 @@
 
             //エンティティリンキング実行
             const entityLinkedText = await entityLinking(inputText, settingObj);
-            console.log(entityLinkedText);
 
             //テキストの出力
             document.getElementById('outputP').innerHTML = entityLinkedText;

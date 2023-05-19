@@ -19,8 +19,9 @@ class EntityCandidateSearcher {
                     return resolve(searchResult['search'].filter(x => x['match']['text'] == this.searchWord).map(x => {
                         return {
                             wikidataUrl: x['url'],
-                            id: x['id']
-                        }
+                            id: x['id'],
+                            matchType: x['match']['type']
+                       }
                     }))
                 })
                 .catch((error) => { console.log(error); });
@@ -37,7 +38,8 @@ class EntityCandidateSearcher {
                     return resolve(searchResult['search'].map(x => {
                         return {
                             wikidataUrl: x['url'],
-                            id: x['id']
+                            id: x['id'],
+                            matchType: x['match']['type']
                         }
                     }))
                 })
@@ -57,7 +59,8 @@ class EntityCandidateSearcher {
                     return resolve(searchResult['query']['search'].map(x => {
                         return {
                             wikidataUrl: 'http://www.wikidata.org/wiki/' + x['title'],
-                            id: x['title']
+                            id: x['title'],
+                            matchType: null
                         }
                     }))
                 })
