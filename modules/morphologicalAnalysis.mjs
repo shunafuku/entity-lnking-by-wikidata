@@ -12,7 +12,7 @@ morphologicalAnalysis関数は、以下の配列を返します
 ]
 */
 export default async function morphologicalAnalysis(inputText) {
-    const DICT_PATH = "./dict";
+    const DICT_PATH = "./modules/dict";
 
     return new Promise((resolve) => {
         kuromoji.builder({ dicPath: DICT_PATH }).build((err, tokenizer) => {
@@ -7396,7 +7396,7 @@ export default async function morphologicalAnalysis(inputText) {
              * Copyright 2014 Takuya Asano
              * Copyright 2010-2014 Atilika Inc. and contributors
              *
-             * Licensed under the Apache License, Version 2.0 (the "License");
+             * Licensed under the Apache License, Version 2.0 (the "License");.dat.gz
              * you may not use this file except in compliance with the License.
              * You may obtain a copy of the License at
              *
