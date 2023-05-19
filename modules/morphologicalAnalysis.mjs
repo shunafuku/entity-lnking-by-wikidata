@@ -12,7 +12,7 @@ morphologicalAnalysis関数は、以下の配列を返します
 ]
 */
 export default async function morphologicalAnalysis(inputText) {
-    const DICT_PATH = "../dict/dict";
+    const DICT_PATH = "../entity-lnking-by-wikidata/dict";
 
     return new Promise((resolve) => {
         kuromoji.builder({ dicPath: DICT_PATH }).build((err, tokenizer) => {
@@ -6916,9 +6916,9 @@ export default async function morphologicalAnalysis(inputText) {
 
             "use strict";
 
-            var ViterbiBuilder = require("./dict/viterbi/ViterbiBuilder");
-            var ViterbiSearcher = require("./dict/viterbi/ViterbiSearcher");
-            var IpadicFormatter = require("./dict/util/IpadicFormatter");
+            var ViterbiBuilder = require("./entity-lnking-by-wikidata/viterbi/ViterbiBuilder");
+            var ViterbiSearcher = require("./entity-lnking-by-wikidata/viterbi/ViterbiSearcher");
+            var IpadicFormatter = require("./entity-lnking-by-wikidata/util/IpadicFormatter");
 
             var PUNCTUATION = /、|。/;
 
@@ -7027,7 +7027,7 @@ export default async function morphologicalAnalysis(inputText) {
 
             module.exports = Tokenizer;
 
-        }, { "./dict/util/IpadicFormatter": 22, "./dict/viterbi/ViterbiBuilder": 24, "./dict/viterbi/ViterbiSearcher": 27 }], 7: [function (require, module, exports) {
+        }, { "./entity-lnking-by-wikidata/util/IpadicFormatter": 22, "./entity-lnking-by-wikidata/viterbi/ViterbiBuilder": 24, "./entity-lnking-by-wikidata/viterbi/ViterbiSearcher": 27 }], 7: [function (require, module, exports) {
             /*
              * Copyright 2014 Takuya Asano
              * Copyright 2010-2014 Atilika Inc. and contributors
@@ -7047,8 +7047,8 @@ export default async function morphologicalAnalysis(inputText) {
 
             "use strict";
 
-            var Tokenizer = require("./dict/Tokenizer");
-            var DictionaryLoader = require("./dict/loader/NodeDictionaryLoader");
+            var Tokenizer = require("./entity-lnking-by-wikidata/Tokenizer");
+            var DictionaryLoader = require("./entity-lnking-by-wikidata/loader/NodeDictionaryLoader");
 
             /**
              * TokenizerBuilder create Tokenizer instance.
@@ -7084,7 +7084,7 @@ export default async function morphologicalAnalysis(inputText) {
 
             module.exports = TokenizerBuilder;
 
-        }, { "./dict/Tokenizer": 6, "./dict/loader/NodeDictionaryLoader": 19 }], 8: [function (require, module, exports) {
+        }, { "./entity-lnking-by-wikidata/Tokenizer": 6, "./entity-lnking-by-wikidata/loader/NodeDictionaryLoader": 19 }], 8: [function (require, module, exports) {
             /*
              * Copyright 2014 Takuya Asano
              * Copyright 2010-2014 Atilika Inc. and contributors
@@ -7143,9 +7143,9 @@ export default async function morphologicalAnalysis(inputText) {
 
             "use strict";
 
-            var InvokeDefinitionMap = require("./dict/InvokeDefinitionMap");
-            var CharacterClass = require("./dict/CharacterClass");
-            var SurrogateAwareString = require("../dict/util/SurrogateAwareString");
+            var InvokeDefinitionMap = require("./entity-lnking-by-wikidata/InvokeDefinitionMap");
+            var CharacterClass = require("./entity-lnking-by-wikidata/CharacterClass");
+            var SurrogateAwareString = require("../entity-lnking-by-wikidata/util/SurrogateAwareString");
 
             var DEFAULT_CATEGORY = "DEFAULT";
 
@@ -7330,7 +7330,7 @@ export default async function morphologicalAnalysis(inputText) {
 
             module.exports = CharacterDefinition;
 
-        }, { "../dict/util/SurrogateAwareString": 23, "./dict/CharacterClass": 8, "./dict/InvokeDefinitionMap": 12 }], 10: [function (require, module, exports) {
+        }, { "../entity-lnking-by-wikidata/util/SurrogateAwareString": 23, "./entity-lnking-by-wikidata/CharacterClass": 8, "./entity-lnking-by-wikidata/InvokeDefinitionMap": 12 }], 10: [function (require, module, exports) {
             /*
              * Copyright 2014 Takuya Asano
              * Copyright 2010-2014 Atilika Inc. and contributors
@@ -7412,9 +7412,9 @@ export default async function morphologicalAnalysis(inputText) {
             "use strict";
 
             var doublearray = require("doublearray");
-            var TokenInfoDictionary = require("./dict/TokenInfoDictionary");
-            var ConnectionCosts = require("./dict/ConnectionCosts");
-            var UnknownDictionary = require("./dict/UnknownDictionary");
+            var TokenInfoDictionary = require("./entity-lnking-by-wikidata/TokenInfoDictionary");
+            var ConnectionCosts = require("./entity-lnking-by-wikidata/ConnectionCosts");
+            var UnknownDictionary = require("./entity-lnking-by-wikidata/UnknownDictionary");
 
             /**
              * Dictionaries container for Tokenizer
@@ -7475,7 +7475,7 @@ export default async function morphologicalAnalysis(inputText) {
 
             module.exports = DynamicDictionaries;
 
-        }, { "./dict/ConnectionCosts": 10, "./dict/TokenInfoDictionary": 13, "./dict/UnknownDictionary": 14, "doublearray": 2 }], 12: [function (require, module, exports) {
+        }, { "./entity-lnking-by-wikidata/ConnectionCosts": 10, "./entity-lnking-by-wikidata/TokenInfoDictionary": 13, "./entity-lnking-by-wikidata/UnknownDictionary": 14, "doublearray": 2 }], 12: [function (require, module, exports) {
             /*
              * Copyright 2014 Takuya Asano
              * Copyright 2010-2014 Atilika Inc. and contributors
@@ -7495,8 +7495,8 @@ export default async function morphologicalAnalysis(inputText) {
 
             "use strict";
 
-            var ByteBuffer = require("../dict/util/ByteBuffer");
-            var CharacterClass = require("./dict/CharacterClass");
+            var ByteBuffer = require("../entity-lnking-by-wikidata/util/ByteBuffer");
+            var CharacterClass = require("./entity-lnking-by-wikidata/CharacterClass");
 
             /**
              * InvokeDefinitionMap represents invoke definition a part of char.def
@@ -7587,7 +7587,7 @@ export default async function morphologicalAnalysis(inputText) {
 
             module.exports = InvokeDefinitionMap;
 
-        }, { "../dict/util/ByteBuffer": 21, "./dict/CharacterClass": 8 }], 13: [function (require, module, exports) {
+        }, { "../entity-lnking-by-wikidata/util/ByteBuffer": 21, "./entity-lnking-by-wikidata/CharacterClass": 8 }], 13: [function (require, module, exports) {
             /*
              * Copyright 2014 Takuya Asano
              * Copyright 2010-2014 Atilika Inc. and contributors
@@ -7607,7 +7607,7 @@ export default async function morphologicalAnalysis(inputText) {
 
             "use strict";
 
-            var ByteBuffer = require("../dict/util/ByteBuffer");
+            var ByteBuffer = require("../entity-lnking-by-wikidata/util/ByteBuffer");
 
             /**
              * TokenInfoDictionary
@@ -7741,7 +7741,7 @@ export default async function morphologicalAnalysis(inputText) {
 
             module.exports = TokenInfoDictionary;
 
-        }, { "../dict/util/ByteBuffer": 21 }], 14: [function (require, module, exports) {
+        }, { "../entity-lnking-by-wikidata/util/ByteBuffer": 21 }], 14: [function (require, module, exports) {
             /*
              * Copyright 2014 Takuya Asano
              * Copyright 2010-2014 Atilika Inc. and contributors
@@ -7761,9 +7761,9 @@ export default async function morphologicalAnalysis(inputText) {
 
             "use strict";
 
-            var TokenInfoDictionary = require("./dict/TokenInfoDictionary");
-            var CharacterDefinition = require("./dict/CharacterDefinition");
-            var ByteBuffer = require("../dict/util/ByteBuffer");
+            var TokenInfoDictionary = require("./entity-lnking-by-wikidata/TokenInfoDictionary");
+            var CharacterDefinition = require("./entity-lnking-by-wikidata/CharacterDefinition");
+            var ByteBuffer = require("../entity-lnking-by-wikidata/util/ByteBuffer");
 
             /**
              * UnknownDictionary
@@ -7801,7 +7801,7 @@ export default async function morphologicalAnalysis(inputText) {
 
             module.exports = UnknownDictionary;
 
-        }, { "../dict/util/ByteBuffer": 21, "./dict/CharacterDefinition": 9, "./dict/TokenInfoDictionary": 13 }], 15: [function (require, module, exports) {
+        }, { "../entity-lnking-by-wikidata/util/ByteBuffer": 21, "./entity-lnking-by-wikidata/CharacterDefinition": 9, "./entity-lnking-by-wikidata/TokenInfoDictionary": 13 }], 15: [function (require, module, exports) {
             /*
              * Copyright 2014 Takuya Asano
              * Copyright 2010-2014 Atilika Inc. and contributors
@@ -7821,8 +7821,8 @@ export default async function morphologicalAnalysis(inputText) {
 
             "use strict";
 
-            var CharacterDefinition = require("../dict/CharacterDefinition");
-            var InvokeDefinitionMap = require("../dict/InvokeDefinitionMap");
+            var CharacterDefinition = require("../entity-lnking-by-wikidata/CharacterDefinition");
+            var InvokeDefinitionMap = require("../entity-lnking-by-wikidata/InvokeDefinitionMap");
 
             var CATEGORY_DEF_PATTERN = /^(\w+)\s+(\d)\s+(\d)\s+(\d)/;
             var CATEGORY_MAPPING_PATTERN = /^(0x[0-9A-F]{4})(?:\s+([^#\s]+))(?:\s+([^#\s]+))*/;
@@ -7871,7 +7871,7 @@ export default async function morphologicalAnalysis(inputText) {
 
             module.exports = CharacterDefinitionBuilder;
 
-        }, { "../dict/CharacterDefinition": 9, "../dict/InvokeDefinitionMap": 12 }], 16: [function (require, module, exports) {
+        }, { "../entity-lnking-by-wikidata/CharacterDefinition": 9, "../entity-lnking-by-wikidata/InvokeDefinitionMap": 12 }], 16: [function (require, module, exports) {
             /*
              * Copyright 2014 Takuya Asano
              * Copyright 2010-2014 Atilika Inc. and contributors
@@ -7891,7 +7891,7 @@ export default async function morphologicalAnalysis(inputText) {
 
             "use strict";
 
-            var ConnectionCosts = require("../dict/ConnectionCosts");
+            var ConnectionCosts = require("../entity-lnking-by-wikidata/ConnectionCosts");
 
             /**
              * Builder class for constructing ConnectionCosts object
@@ -7943,7 +7943,7 @@ export default async function morphologicalAnalysis(inputText) {
 
             module.exports = ConnectionCostsBuilder;
 
-        }, { "../dict/ConnectionCosts": 10 }], 17: [function (require, module, exports) {
+        }, { "../entity-lnking-by-wikidata/ConnectionCosts": 10 }], 17: [function (require, module, exports) {
             /*
              * Copyright 2014 Takuya Asano
              * Copyright 2010-2014 Atilika Inc. and contributors
@@ -7964,11 +7964,11 @@ export default async function morphologicalAnalysis(inputText) {
             "use strict";
 
             var doublearray = require("doublearray");
-            var DynamicDictionaries = require("../dict/DynamicDictionaries");
-            var TokenInfoDictionary = require("../dict/TokenInfoDictionary");
-            var ConnectionCostsBuilder = require("./dict/ConnectionCostsBuilder");
-            var CharacterDefinitionBuilder = require("./dict/CharacterDefinitionBuilder");
-            var UnknownDictionary = require("../dict/UnknownDictionary");
+            var DynamicDictionaries = require("../entity-lnking-by-wikidata/DynamicDictionaries");
+            var TokenInfoDictionary = require("../entity-lnking-by-wikidata/TokenInfoDictionary");
+            var ConnectionCostsBuilder = require("./entity-lnking-by-wikidata/ConnectionCostsBuilder");
+            var CharacterDefinitionBuilder = require("./entity-lnking-by-wikidata/CharacterDefinitionBuilder");
+            var UnknownDictionary = require("../entity-lnking-by-wikidata/UnknownDictionary");
 
             /**
              * Build dictionaries (token info, connection costs)
@@ -8103,7 +8103,7 @@ export default async function morphologicalAnalysis(inputText) {
 
             module.exports = DictionaryBuilder;
 
-        }, { "../dict/DynamicDictionaries": 11, "../dict/TokenInfoDictionary": 13, "../dict/UnknownDictionary": 14, "./dict/CharacterDefinitionBuilder": 15, "./dict/ConnectionCostsBuilder": 16, "doublearray": 2 }], 18: [function (require, module, exports) {
+        }, { "../entity-lnking-by-wikidata/DynamicDictionaries": 11, "../entity-lnking-by-wikidata/TokenInfoDictionary": 13, "../entity-lnking-by-wikidata/UnknownDictionary": 14, "./entity-lnking-by-wikidata/CharacterDefinitionBuilder": 15, "./entity-lnking-by-wikidata/ConnectionCostsBuilder": 16, "doublearray": 2 }], 18: [function (require, module, exports) {
             /*
              * Copyright 2014 Takuya Asano
              * Copyright 2010-2014 Atilika Inc. and contributors
@@ -8123,8 +8123,8 @@ export default async function morphologicalAnalysis(inputText) {
 
             "use strict";
 
-            var TokenizerBuilder = require("./dict/TokenizerBuilder");
-            var DictionaryBuilder = require("./dict/dict/builder/DictionaryBuilder");
+            var TokenizerBuilder = require("./entity-lnking-by-wikidata/TokenizerBuilder");
+            var DictionaryBuilder = require("./entity-lnking-by-wikidata/dict/builder/DictionaryBuilder");
 
             // Public methods
             var kuromoji = {
@@ -8138,7 +8138,7 @@ export default async function morphologicalAnalysis(inputText) {
 
             module.exports = kuromoji;
 
-        }, { "./dict/TokenizerBuilder": 7, "./dict/dict/builder/DictionaryBuilder": 17 }], 19: [function (require, module, exports) {
+        }, { "./entity-lnking-by-wikidata/TokenizerBuilder": 7, "./entity-lnking-by-wikidata/dict/builder/DictionaryBuilder": 17 }], 19: [function (require, module, exports) {
             /*
              * Copyright 2014 Takuya Asano
              * Copyright 2010-2014 Atilika Inc. and contributors
@@ -8159,7 +8159,7 @@ export default async function morphologicalAnalysis(inputText) {
             "use strict";
 
             var zlib = require("zlibjs/bin/gunzip.min.js");
-            var DictionaryLoader = require("./dict/DictionaryLoader");
+            var DictionaryLoader = require("./entity-lnking-by-wikidata/DictionaryLoader");
 
             /**
              * BrowserDictionaryLoader inherits DictionaryLoader, using jQuery XHR for download
@@ -8207,7 +8207,7 @@ export default async function morphologicalAnalysis(inputText) {
 
             module.exports = BrowserDictionaryLoader;
 
-        }, { "./dict/DictionaryLoader": 20, "zlibjs/bin/gunzip.min.js": 5 }], 20: [function (require, module, exports) {
+        }, { "./entity-lnking-by-wikidata/DictionaryLoader": 20, "zlibjs/bin/gunzip.min.js": 5 }], 20: [function (require, module, exports) {
             /*
              * Copyright 2014 Takuya Asano
              * Copyright 2010-2014 Atilika Inc. and contributors
@@ -8229,7 +8229,7 @@ export default async function morphologicalAnalysis(inputText) {
 
             var path = require("path");
             var async = require("async");
-            var DynamicDictionaries = require("../dict/dict/DynamicDictionaries");
+            var DynamicDictionaries = require("../entity-lnking-by-wikidata/dict/DynamicDictionaries");
 
             /**
              * DictionaryLoader base constructor
@@ -8346,7 +8346,7 @@ export default async function morphologicalAnalysis(inputText) {
 
             module.exports = DictionaryLoader;
 
-        }, { "../dict/dict/DynamicDictionaries": 11, "async": 1, "path": 3 }], 21: [function (require, module, exports) {
+        }, { "../entity-lnking-by-wikidata/dict/DynamicDictionaries": 11, "async": 1, "path": 3 }], 21: [function (require, module, exports) {
             /*
              * Copyright 2014 Takuya Asano
              * Copyright 2010-2014 Atilika Inc. and contributors
@@ -8819,9 +8819,9 @@ export default async function morphologicalAnalysis(inputText) {
 
             "use strict";
 
-            var ViterbiNode = require("./dict/ViterbiNode");
-            var ViterbiLattice = require("./dict/ViterbiLattice");
-            var SurrogateAwareString = require("../dict/util/SurrogateAwareString");
+            var ViterbiNode = require("./entity-lnking-by-wikidata/ViterbiNode");
+            var ViterbiLattice = require("./entity-lnking-by-wikidata/ViterbiLattice");
+            var SurrogateAwareString = require("../entity-lnking-by-wikidata/util/SurrogateAwareString");
 
             /**
              * ViterbiBuilder builds word lattice (ViterbiLattice)
@@ -8902,7 +8902,7 @@ export default async function morphologicalAnalysis(inputText) {
 
             module.exports = ViterbiBuilder;
 
-        }, { "../dict/util/SurrogateAwareString": 23, "./dict/ViterbiLattice": 25, "./dict/ViterbiNode": 26 }], 25: [function (require, module, exports) {
+        }, { "../entity-lnking-by-wikidata/util/SurrogateAwareString": 23, "./entity-lnking-by-wikidata/ViterbiLattice": 25, "./entity-lnking-by-wikidata/ViterbiNode": 26 }], 25: [function (require, module, exports) {
             /*
              * Copyright 2014 Takuya Asano
              * Copyright 2010-2014 Atilika Inc. and contributors
@@ -8922,7 +8922,7 @@ export default async function morphologicalAnalysis(inputText) {
 
             "use strict";
 
-            var ViterbiNode = require("./dict/ViterbiNode");
+            var ViterbiNode = require("./entity-lnking-by-wikidata/ViterbiNode");
 
             /**
              * ViterbiLattice is a lattice in Viterbi algorithm
@@ -8964,7 +8964,7 @@ export default async function morphologicalAnalysis(inputText) {
 
             module.exports = ViterbiLattice;
 
-        }, { "./dict/ViterbiNode": 26 }], 26: [function (require, module, exports) {
+        }, { "./entity-lnking-by-wikidata/ViterbiNode": 26 }], 26: [function (require, module, exports) {
             /*
              * Copyright 2014 Takuya Asano
              * Copyright 2010-2014 Atilika Inc. and contributors
