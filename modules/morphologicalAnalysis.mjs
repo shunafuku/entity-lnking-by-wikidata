@@ -16,7 +16,6 @@ export default async function morphologicalAnalysis(inputText) {
 
     return new Promise((resolve) => {
         kuromoji.builder({ dicPath: DICT_PATH }).build((err, tokenizer) => {
-            console.log(err);
             const tokens = tokenizer.tokenize(inputText);// 解析データの取得
             return resolve(tokens.map(token => {
                 return {

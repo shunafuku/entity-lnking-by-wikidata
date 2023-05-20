@@ -2,7 +2,6 @@ function removeDuplicates(linkedArray) {
   let appearedcombinationList = [];
   linkedArray.map((x) => {
     if (x["linkedEntity"] != null) {
-      console.log(x);
       if (appearedcombinationList.indexOf(x["linkedEntity"]["id"]) == -1) {
         appearedcombinationList.push(x["linkedEntity"]["id"]);
       } else {
