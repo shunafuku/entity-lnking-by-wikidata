@@ -76,10 +76,12 @@ function needsSearch(morphologicalAnalysisResult, settingObj) {
 //EntityLinkingを行う関数
 export default async function entityLinking(inputText, settingObj) {
   //設定
+  console.log('設定情報');
   console.log(settingObj);
 
   //形態素解析
   const morphologicalAnalysisResults = await morphologicalAnalysis(inputText);
+  console.log('形態素解析');
   console.log(morphologicalAnalysisResults);
 
   //エンティティ候補取得
