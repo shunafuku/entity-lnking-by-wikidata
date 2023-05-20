@@ -1,5 +1,7 @@
 # entity-lnking-by-wikidata
  wikidataを対象としたEntityLinkingシステム
+ [デモサイト](https://shunafuku.github.io/entity-lnking-by-wikidata/)
+
 
 # 参考にしたサイト
 ## 形態素解析
