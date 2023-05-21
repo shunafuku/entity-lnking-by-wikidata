@@ -78,12 +78,14 @@ function needsSearch(morphologicalAnalysisResult, settingObj) {
 
 //EntityLinkingを行う関数
 export default async function entityLinking(inputText, settingObj) {
+  performance.mark("start"); 
   //設定
   console.log("設定情報");
   console.log(settingObj);
 
   //形態素解析
   const morphologicalAnalysisResults = await morphologicalAnalysis(inputText);
+  performance.mark("morphologicalAnalysis"); 
   console.log("形態素解析");
   console.log(morphologicalAnalysisResults);
 
@@ -101,16 +103,19 @@ export default async function entityLinking(inputText, settingObj) {
       return result;
     })
   );
+  performance.mark("searchEntity"); 
   console.log("候補取得後");
   console.log(searchResults);
 
   //エンティティ決定
   const decideResults = await decideEntity(searchResults, settingObj);
+  performance.mark("decideEntity"); 
   console.log("エンティティ決定後");
   console.log(decideResults);
 
   //category付与
   const addCategoryResult = await addCategory(decideResults);
+  performance.mark("addCategory"); 
   console.log("category追加");
   console.log(addCategoryResult);
 
@@ -124,5 +129,18 @@ export default async function entityLinking(inputText, settingObj) {
       checkedCategories: settingObj["checkedCategories"],
     }
   );
+  performance.mark("end");
+
+  performance.measure("morphologicalAnalysisTime", "start", "morphologicalAnalysis");
+  performance.measure("searchEntityTime", "morphologicalAnalysis", "searchEntity");
+  performance.measure("decideEntityTime", "searchEntity", "decideEntity");
+  performance.measure("addCategoryTime", "decideEntity", "addCategory");
+  performance.measure("createLinkedTextTime", "addCategory", "end");
+  performance.measure("allTime", "start", "end");
+  console.log(performance.getEntriesByType("measure"));
+
+  performance.clearMarks();
+  performance.clearMeasures();
+
   return entityLinkedText;
 }
