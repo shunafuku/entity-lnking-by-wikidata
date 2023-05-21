@@ -11,10 +11,11 @@ morphologicalAnalysis関数は、以下の配列を返します
     }
 ]
 */
+import searchCompoundWord from './compoundWord.mjs';
+
 export default async function morphologicalAnalysis(inputText) {
     const DICT_PATH = "./modules/dict";
-
-    return new Promise((resolve) => {
+    const morphologicalAnalysisResult = await new Promise((resolve) => {
         kuromoji.builder({ dicPath: DICT_PATH }).build((err, tokenizer) => {
             const tokens = tokenizer.tokenize(inputText);// 解析データの取得
             return resolve(tokens.map(token => {
@@ -29,7 +30,9 @@ export default async function morphologicalAnalysis(inputText) {
             }));
         });
     });
-
+    console.log('kuromoji解析結果');
+    console.log(morphologicalAnalysisResult);
+    return await searchCompoundWord(morphologicalAnalysisResult);
 }
 
 //kuromoji

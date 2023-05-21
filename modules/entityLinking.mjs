@@ -1,7 +1,7 @@
 import morphologicalAnalysis from "./morphologicalAnalysis.mjs";
 import searchEntityCandidate from "./searchEntity.mjs";
 import decideEntity from "./decideEntity.mjs";
-import fetchCategory from "./category.mjs";
+import addCategory from "./category.mjs";
 import createLinkedText from "./createLinkedText.mjs";
 
 //検索条件に適合する（検索する必要のある）単語の場合にTrueを返す
@@ -110,17 +110,9 @@ export default async function entityLinking(inputText, settingObj) {
   console.log(decideResults);
 
   //category付与
-  const addCategoryResult =
-    settingObj["checkedCategories"].length == 0
-      ? decideResults
-      : await Promise.all(
-          decideResults.map(async (x) => {
-            if (x["linkedEntity"] != null) {
-              x["category"] = await fetchCategory(x["linkedEntity"]["id"]);
-            }
-            return x;
-          })
-        );
+  const addCategoryResult = await addCategory(decideResults);
+  console.log("category追加");
+  console.log(addCategoryResult);
 
   //リンキングテキスト生成
   const entityLinkedText = createLinkedText(
