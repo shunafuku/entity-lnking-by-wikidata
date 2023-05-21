@@ -33,7 +33,6 @@ export default async function addCategory(decideResults){
       }else{
         x["category"] = cache.get(wikidataId);
       }
-      console.log(x["category"]);
     }
     resultArray.push(x)
   }
