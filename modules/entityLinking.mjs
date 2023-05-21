@@ -1,6 +1,6 @@
 import morphologicalAnalysis from "./morphologicalAnalysis.mjs";
-import entityCandidateSearch from "./entitySearch.mjs";
-import entityDecide from "./entityDecide.mjs";
+import searchEntityCandidate from "./searchEntity.mjs";
+import decideEntity from "./decideEntity.mjs";
 import fetchCategory from "./category.mjs";
 import createLinkedText from "./createLinkedText.mjs";
 
@@ -91,7 +91,7 @@ export default async function entityLinking(inputText, settingObj) {
   const searchResults = await Promise.all(
     morphologicalAnalysisResults.map(async (result) => {
       if (needsSearch(result, settingObj)) {
-        result["candidate"] = await entityCandidateSearch(
+        result["candidate"] = await searchEntityCandidate(
           result["surface_form"],
           settingObj
         );
@@ -105,7 +105,7 @@ export default async function entityLinking(inputText, settingObj) {
   console.log(searchResults);
 
   //エンティティ決定
-  const decideResults = await entityDecide(searchResults, settingObj);
+  const decideResults = await decideEntity(searchResults, settingObj);
   console.log("エンティティ決定後");
   console.log(decideResults);
 

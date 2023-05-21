@@ -51,7 +51,7 @@ class EntityDecider {
   }
 }
 
-export default async function entityDecide(searchResults, settingObj) {
+export default async function decideEntity(searchResults, settingObj) {
   //並び替え
   const matchTypeFilteringResult = matchTypeFiltering(
     searchResults,

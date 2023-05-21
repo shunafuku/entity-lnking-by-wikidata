@@ -70,7 +70,7 @@ class EntityCandidateSearcher {
 
 }
 
-export default async function entityCandidateSearch(word, settingObj) {
+export default async function searchEntityCandidate(word, settingObj) {
     const searcher = new EntityCandidateSearcher(word, settingObj.apiLimit);
     let result;
     if (settingObj.searchType == 'exactMatchSearch') {
