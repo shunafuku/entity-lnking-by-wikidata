@@ -14,15 +14,15 @@ function convert2TestObject(inputText) {
         //aタグの値の開始位置と終了位置を取得
         const startPosition = outputText.length;
         const endPosition = startPosition + aTagValue.length - 1;
-        //出力テキストに、aタグの値を追加
-        outputText += aTagValue;
         //ELの結果を設定
-        ELResult = {
+        const ELResult = {
           startPosition: startPosition,
           endPosition: endPosition,
           link: aTagHref,
           label: aTagValue,
         };
+        //出力テキストに、aタグの値を追加
+        outputText += aTagValue;
         //ELの結果の配列に追加
         ELResultArray.push(ELResult);
       } else {
@@ -31,7 +31,7 @@ function convert2TestObject(inputText) {
       }
     });
     return {
-      outputText: outputText,
-      ELResultArray: ELResultArray,
+      'outputText': outputText,
+      'ELResultArray': ELResultArray,
     };
   }

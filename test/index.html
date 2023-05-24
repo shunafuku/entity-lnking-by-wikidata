@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script type="module">
+        import entityLinking from './modules/entityLinking.mjs';
+        window.addEventListener('DOMContentLoaded', () => {
+          const startButton = document.getElementById('startButton');
+          startButton.addEventListener(
+            'click',
+            async () => {
+              //loading画面出す
+              document.getElementById('loading').style.display = 'block';
+              //入力テキストの取得
+              const inputText = document.getElementById('inputText').value;
+              const settingObj = {
+                //API検索時の検索数上限
+                apiLimit: document.getElementById('apiLimit').value,
+                //単語の検索方法（完全一致、前方一致、あいまい検索)
+                searchType: getCheckedRadioButton('selectSearchType'),
+                //検索されるラベルのタイプ（ラベル名優先、ラベル名のみ、別名のみ）
+                selectMatchLabelType: getCheckedRadioButton(
+                  'selectMatchLabelType'
+                ),
+                //エンティティリンキングの対象とする名詞の種類
+                selectNounType: getCheckedRadioButton('selectNounType'),
+                //ホワイトリスト、ブラックリストの内容
+                whiteList: document
+                  .getElementById('whiteListValue')
+                  .value.split(','),
+                blackList: document
+                  .getElementById('blackListValue')
+                  .value.split(','),
+                //NGワード
+                ngWords: document.getElementById('ngWords').value.split(','),
+                //エンティティ表示先
+                displayPage: getCheckedRadioButton('SelectTargetKnowledgeGraph'),
+                //
+                checkedCategories: getCheckedCategories(),
+              };
+  
+              //エンティティリンキング実行
+              const entityLinkedText = await entityLinking(inputText, settingObj);
+  
+              //テキストの出力
+              document.getElementById('outputP').innerHTML = entityLinkedText;
+              //loading画面消す
+              document.getElementById('loading').style.display = 'none';
+            },
+            false
+          );
+        });
+      </script>
+</body>
+</html>
