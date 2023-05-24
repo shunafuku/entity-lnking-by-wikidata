@@ -34,7 +34,7 @@ function matchTypeFiltering(searchResults, selectMatchLabelType) {
       }
       return result;
     });
-  }
+  } else if(selectMatchLabelType == "default")
   return searchResults;
 }
 
