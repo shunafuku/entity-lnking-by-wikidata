@@ -17,26 +17,24 @@ async function fetchCategory(id) {
   });
 }
 
-export default async function addCategory(decideResults){
-  console.log('Category追加開始')
-  const sleep = ms => new Promise(reserve => setTimeout(reserve, ms));
+export default async function addCategory(decideResults) {
+  console.log('Category追加開始');
+  const sleep = (ms) => new Promise((reserve) => setTimeout(reserve, ms));
   let cache = new Map();
   let resultArray = [];
 
-  for(const x of decideResults){
-    if (x["linkedEntity"] != null) {
-      const wikidataId = x["linkedEntity"]["id"];
-      if(cache.get(wikidataId) == null){
-        x["category"] = await fetchCategory(wikidataId);
-        cache.set(wikidataId, x["category"]);
+  for (const x of decideResults) {
+    if (x['linkedEntity'] != null) {
+      const wikidataId = x['linkedEntity']['id'];
+      if (cache.get(wikidataId) == null) {
+        x['category'] = await fetchCategory(wikidataId);
+        cache.set(wikidataId, x['category']);
         await sleep(50);
-      }else{
-        x["category"] = cache.get(wikidataId);
+      } else {
+        x['category'] = cache.get(wikidataId);
       }
     }
-    resultArray.push(x)
+    resultArray.push(x);
   }
-  return await Promise.all(
-    resultArray
-  );
+  return await Promise.all(resultArray);
 }
