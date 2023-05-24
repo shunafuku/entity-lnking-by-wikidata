@@ -78,7 +78,7 @@ function getCategoryClass(categoryArray, selectCategories) {
   return '';
 }
 
-function createStringOfAnchorElement(href, className = '', value, displayPage, typesOfOpeningTabs) {
+function createStringOfAnchorElement(href, className = '', value, displayPage) {
   if(displayPage == 'kgs'){//別のウィンドウで開く
     return (
       '<a ' +
