@@ -9,12 +9,12 @@
     <link rel="stylesheet" href="./styles/category.css" />
     <script>
       const exampleSentences = [
-        "オキシトシン（OXT）は、視床下部で産生される神経ペプチドです。OXT産生ニューロンは軸索を神経下垂体後葉、つまり下垂体後葉に投射し、ペプチドホルモンとして末梢的にOXTを血液循環に放出します。これらのニューロンはまた、いくつかの脳領域を神経支配し、そこで神経ペプチドとしてOXTを放出します。したがって、OXTは、子宮収縮や授乳などの末梢性機能だけでなく、社会的、攻撃的、恐怖、母性行動などの中枢性機能の調節にも関与しています。",
-        "日本国（にほんこく、にっぽんこく、英: Japan）、または日本（にほん、にっぽん）は、東アジアに位置する民主制国家[1]。首都は東京都[注 2][2][3]。全長3500キロメートル以上にわたる国土は、主に日本列島[注 6]および千島列島・南西諸島・伊豆諸島・小笠原諸島などの弧状列島により構成され[3][4]、大部分が温帯に属するが、北部や島嶼部では亜寒帯や熱帯の地域がある[5][6]。地形は起伏に富み、火山地・丘陵を含む山地の面積は国土の約75 % を占め[6]、沿岸の平野部に人口が集中している。国内には行政区分として47の都道府県があり、日本人（大和民族・琉球民族・アイヌ民族[注 7]・外国系の人々）と外国人が居住し、日本語を通用する[2][3]。",
-        "養殖業（ようしょくぎょう、英語: aquaculture）とは、生物を、その本体または副生成物を食品や工業製品などとして利用することを目的として、人工的に育てる産業である。金魚、錦鯉などを鑑賞・愛玩目的で育てることは「養魚」と称する場合が多い[1]。狭義及び通常は、水産業（養殖漁業）の一種で、魚介類や海藻などの水棲生物の人為的繁殖について使われる。広義には、生物全般を育てることを指すが、陸生植物に関しては栽培・農耕、哺乳類に関しては畜産、そのうち乳牛などは酪農、ニワトリに関しては養鶏、ブタは養豚という用語がある。",
+        'オキシトシン（OXT）は、視床下部で産生される神経ペプチドです。OXT産生ニューロンは軸索を神経下垂体後葉、つまり下垂体後葉に投射し、ペプチドホルモンとして末梢的にOXTを血液循環に放出します。これらのニューロンはまた、いくつかの脳領域を神経支配し、そこで神経ペプチドとしてOXTを放出します。したがって、OXTは、子宮収縮や授乳などの末梢性機能だけでなく、社会的、攻撃的、恐怖、母性行動などの中枢性機能の調節にも関与しています。',
+        '日本国（にほんこく、にっぽんこく、英: Japan）、または日本（にほん、にっぽん）は、東アジアに位置する民主制国家[1]。首都は東京都[注 2][2][3]。全長3500キロメートル以上にわたる国土は、主に日本列島[注 6]および千島列島・南西諸島・伊豆諸島・小笠原諸島などの弧状列島により構成され[3][4]、大部分が温帯に属するが、北部や島嶼部では亜寒帯や熱帯の地域がある[5][6]。地形は起伏に富み、火山地・丘陵を含む山地の面積は国土の約75 % を占め[6]、沿岸の平野部に人口が集中している。国内には行政区分として47の都道府県があり、日本人（大和民族・琉球民族・アイヌ民族[注 7]・外国系の人々）と外国人が居住し、日本語を通用する[2][3]。',
+        '養殖業（ようしょくぎょう、英語: aquaculture）とは、生物を、その本体または副生成物を食品や工業製品などとして利用することを目的として、人工的に育てる産業である。金魚、錦鯉などを鑑賞・愛玩目的で育てることは「養魚」と称する場合が多い[1]。狭義及び通常は、水産業（養殖漁業）の一種で、魚介類や海藻などの水棲生物の人為的繁殖について使われる。広義には、生物全般を育てることを指すが、陸生植物に関しては栽培・農耕、哺乳類に関しては畜産、そのうち乳牛などは酪農、ニワトリに関しては養鶏、ブタは養豚という用語がある。',
       ];
       function setExampleSentence(number) {
-        document.getElementById("inputText").value =
+        document.getElementById('inputText').value =
           exampleSentences[number - 1];
       }
     </script>
@@ -29,7 +29,7 @@
         }
       }
       function getCheckedCategories() {
-        const categoryElements = document.getElementsByClassName("category");
+        const categoryElements = document.getElementsByClassName('category');
         return Array.prototype.filter
           .call(categoryElements, function (categoryElements) {
             return categoryElements.checked === true;
@@ -45,8 +45,8 @@
         }
         window.open(
           page,
-          "DetailsWin",
-          "left=" + lw + ",top=" + y + ",width=400,height=600,scrollbars=1"
+          'DetailsWin',
+          'left=' + lw + ',top=' + y + ',width=400,height=600,scrollbars=1'
         );
       }
     </script>
@@ -96,8 +96,23 @@
   </head>
 
   <body>
-    <div id="loading" style="position: absolute; backdrop-filter: blur(12px); width: 99%; height: 99%; display: none;">
-      <div style="position: absolute;top: calc(50vh - 50px); left: calc(50vw - 50px)">
+    <div
+      id="loading"
+      style="
+        position: absolute;
+        backdrop-filter: blur(12px);
+        width: 99%;
+        height: 99%;
+        display: none;
+      "
+    >
+      <div
+        style="
+          position: absolute;
+          top: calc(50vh - 50px);
+          left: calc(50vw - 50px);
+        "
+      >
         <svg class="ring" viewBox="25 25 50 50" stroke-width="5">
           <circle cx="50" cy="50" r="20" />
         </svg>
@@ -376,47 +391,47 @@
     </div>
 
     <script type="module">
-      import entityLinking from "./modules/entityLinking.mjs";
-      window.addEventListener("DOMContentLoaded", () => {
-        const startButton = document.getElementById("startButton");
+      import entityLinking from './modules/entityLinking.mjs';
+      window.addEventListener('DOMContentLoaded', () => {
+        const startButton = document.getElementById('startButton');
         startButton.addEventListener(
-          "click",
+          'click',
           async () => {
             //loading画面出す
             document.getElementById('loading').style.display = 'block';
             //入力テキストの取得
-            const inputText = document.getElementById("inputText").value;
+            const inputText = document.getElementById('inputText').value;
             const settingObj = {
               //API検索時の検索数上限
-              apiLimit: document.getElementById("apiLimit").value,
+              apiLimit: document.getElementById('apiLimit').value,
               //単語の検索方法（完全一致、前方一致、あいまい検索)
-              searchType: getCheckedRadioButton("selectSearchType"),
+              searchType: getCheckedRadioButton('selectSearchType'),
               //検索されるラベルのタイプ（ラベル名優先、ラベル名のみ、別名のみ）
               selectMatchLabelType: getCheckedRadioButton(
-                "selectMatchLabelType"
+                'selectMatchLabelType'
               ),
               //エンティティリンキングの対象とする名詞の種類
-              selectNounType: getCheckedRadioButton("selectNounType"),
+              selectNounType: getCheckedRadioButton('selectNounType'),
               //ホワイトリスト、ブラックリストの内容
               whiteList: document
-                .getElementById("whiteListValue")
-                .value.split(","),
+                .getElementById('whiteListValue')
+                .value.split(','),
               blackList: document
-                .getElementById("blackListValue")
-                .value.split(","),
+                .getElementById('blackListValue')
+                .value.split(','),
               //NGワード
-              ngWords: document.getElementById("ngWords").value.split(","),
+              ngWords: document.getElementById('ngWords').value.split(','),
               //エンティティ表示先
-              displayPage: getCheckedRadioButton("SelectTargetKnowledgeGraph"),
+              displayPage: getCheckedRadioButton('SelectTargetKnowledgeGraph'),
               //
               checkedCategories: getCheckedCategories(),
             };
-            
+
             //エンティティリンキング実行
             const entityLinkedText = await entityLinking(inputText, settingObj);
 
             //テキストの出力
-            document.getElementById("outputP").innerHTML = entityLinkedText;
+            document.getElementById('outputP').innerHTML = entityLinkedText;
             //loading画面消す
             document.getElementById('loading').style.display = 'none';
           },
