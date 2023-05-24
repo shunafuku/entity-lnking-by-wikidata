@@ -78,21 +78,51 @@ function getCategoryClass(categoryArray, selectCategories) {
   return '';
 }
 
-function createStringOfAnchorElement(href, className = '', value) {
-  return (
-    '<a ' +
-    'class="' +
-    className +
-    '" ' +
-    'href="javascript:ShowDetails(' +
-    "'" +
-    href +
-    "'" +
-    ')"' +
-    '>' +
-    value +
-    '</a>'
-  );
+function createStringOfAnchorElement(href, className = '', value, displayPage, typesOfOpeningTabs) {
+  if(displayPage == 'kgs'){//別のウィンドウで開く
+    return (
+      '<a ' +
+      'class="' +
+      className +
+      '" ' +
+      'href="javascript:ShowDetails(' +
+      "'" +
+      href +
+      "'" +
+      ')"' +
+      '>' +
+      value +
+      '</a>'
+    );
+  }else if(displayPage == 'wikidata'){
+    return (
+      '<a ' +
+      'class="' +
+      className +
+      '" ' +
+      'href="' +
+      href +
+      '" ' + 
+      'target="_blank" rel="noopener noreferrer" ' +
+      '>' +
+      value +
+      '</a>'
+    );
+  }else{
+    return (
+      '<a ' +
+      'class="' +
+      className +
+      '" ' +
+      'href="' +
+      href +
+      '"' +
+      '>' +
+      value +
+      '</a>'
+    );
+  }
+  
 }
 function wikidataId2TargetsiteUrl(targetSite, wikidataId) {
   if (targetSite == 'kgs') {
@@ -122,7 +152,7 @@ export default function createLinkedText(
           const url = wikidataId2TargetsiteUrl(displayPage, wikidataId);
           const categoryClass = '';
           return (
-            createStringOfAnchorElement(url, categoryClass, x['word']) + ' '
+            createStringOfAnchorElement(url, categoryClass, x['word'], displayPage)// + ' '
           );
         }
       })
@@ -142,7 +172,7 @@ export default function createLinkedText(
             selectCategories
           );
           return (
-            createStringOfAnchorElement(url, categoryClass, x['word']) + ' '
+            createStringOfAnchorElement(url, categoryClass, x['word'], displayPage)// + ' '
           );
         }
       })
