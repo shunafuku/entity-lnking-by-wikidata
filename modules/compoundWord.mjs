@@ -93,13 +93,53 @@ async function decideCompoundWord(inputTextArray) {
 
 export default async function searchCompoundWord(inputTextArray) {
   const compoundWordCandidate = weldCompoundWordCandidate(inputTextArray);
+  console.log('候補')
+  console.log(compoundWordCandidate)
   let resultArray = [];
-  for (const x of compoundWordCandidate) {
-    if (x.length == 1) {
-      resultArray.push(x[0]);
-    } else {
-      resultArray = resultArray.concat(await decideCompoundWord(x));
-    }
+  // for (const x of compoundWordCandidate) {
+  //   if (x.length == 1) {
+  //     resultArray.push(x[0]);
+  //   } else {
+  //     resultArray = resultArray.concat(await decideCompoundWord(x));
+  //   }
+  // }
+
+  const sleep = (ms) => new Promise((reserve) => setTimeout(reserve, ms));
+  const splitTo2DArray = (array, num) => {
+    const length = Math.ceil(array.length / num);
+    return new Array(length)
+      .fill()
+      .map((_, i) => array.slice(i * num, (i + 1) * num));
+  };
+  const hoge = splitTo2DArray(compoundWordCandidate, 100);
+  let hogeResult = [];
+  for (const hogehoge1 of hoge) {
+    const start = performance.now();
+// 実行時間を計測した処理
+    hogeResult.push(
+      await Promise.all(
+        hogehoge1.map(async (x) => {
+          if (x.length == 1) {
+            return x;
+          } else {
+            return await decideCompoundWord(x);
+          }
+        })
+      )
+    );
+    const end = performance.now();
+console.log(end - start);
+    await sleep(50);
   }
+  resultArray = hogeResult
+    .reduce((accumulator, currentArray) => {
+      accumulator.push(...currentArray);
+      return accumulator;
+    }, [])
+    .reduce((accumulator, currentArray) => {
+      accumulator.push(...currentArray);
+      return accumulator;
+    }, []);
+
   return resultArray;
 }
