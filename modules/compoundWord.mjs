@@ -93,8 +93,8 @@ async function decideCompoundWord(inputTextArray) {
 
 export default async function searchCompoundWord(inputTextArray) {
   const compoundWordCandidate = weldCompoundWordCandidate(inputTextArray);
-  console.log('複合語候補')
-  console.log(compoundWordCandidate)
+  console.log('複合語候補');
+  console.log(compoundWordCandidate);
   let resultArray = [];
   // for (const x of compoundWordCandidate) {
   //   if (x.length == 1) {
