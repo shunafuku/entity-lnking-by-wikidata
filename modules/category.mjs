@@ -38,11 +38,5 @@ export default async function addCategory(decideResults){
   }
   return await Promise.all(
     resultArray
-    // decideResults.map(async (x) => {
-    //   if (x["linkedEntity"] != null) {
-    //     x["category"] = await fetchCategory(x["linkedEntity"]["id"]);
-    //   }
-    //   return x;
-    // })
   );
 }
