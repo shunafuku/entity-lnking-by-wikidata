@@ -93,7 +93,7 @@ async function decideCompoundWord(inputTextArray) {
 
 export default async function searchCompoundWord(inputTextArray) {
   const compoundWordCandidate = weldCompoundWordCandidate(inputTextArray);
-  console.log('候補')
+  console.log('複合語候補')
   console.log(compoundWordCandidate)
   let resultArray = [];
   // for (const x of compoundWordCandidate) {
@@ -114,8 +114,6 @@ export default async function searchCompoundWord(inputTextArray) {
   const hoge = splitTo2DArray(compoundWordCandidate, 100);
   let hogeResult = [];
   for (const hogehoge1 of hoge) {
-    const start = performance.now();
-// 実行時間を計測した処理
     hogeResult.push(
       await Promise.all(
         hogehoge1.map(async (x) => {
@@ -127,8 +125,6 @@ export default async function searchCompoundWord(inputTextArray) {
         })
       )
     );
-    const end = performance.now();
-console.log(end - start);
     await sleep(50);
   }
   resultArray = hogeResult

@@ -34,7 +34,6 @@ export default async function addCategory(decideResults) {
     addCategoryArrays.push(
       await Promise.all(
         neko.map(async (x) => {
-          console.log(x['word']);
           if (x['linkedEntity'] != null) {
             const wikidataId = x['linkedEntity']['id'];
             if (cache.get(wikidataId) == null) {

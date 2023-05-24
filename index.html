@@ -22,7 +22,6 @@
       function getCheckedRadioButton(name) {
         const radioButtonElements = document.getElementsByName(name);
         const count = radioButtonElements.length;
-        console.log();
         for (let i = 0; i < count; i++) {
           if (radioButtonElements.item(i).checked) {
             return radioButtonElements.item(i).value;
