@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="jp">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="./styles/main.css" />
+    <link rel="stylesheet" href="./styles/category.css" />
+    <script>
+      const exampleSentences = [
+        '和平成立後、家康は駿府へ、秀忠は伏見に戻ったが、一方で国友鍛冶に大砲の製造を命じるなど、戦争準備を行っている。慶長20年（1615年）<a href="/wiki/3%E6%9C%8815%E6%97%A5_(%E6%97%A7%E6%9A%A6)" title="3月15日 (旧暦)">3月15日</a>、大坂に浪人の乱暴・狼藉、堀や塀の復旧、京や伏見への放火の風聞といった不穏な動きがあるとする報が<a href="/wiki/%E4%BA%AC%E9%83%BD%E6%89%80%E5%8F%B8%E4%BB%A3" title="京都所司代">京都所司代</a>・<a href="/wiki/%E6%9D%BF%E5%80%89%E5%8B%9D%E9%87%8D" title="板倉勝重">板倉勝重</a>より駿府へ届くと、徳川方は浪人の解雇か豊臣家の<a href="/wiki/%E8%BB%A2%E5%B0%81" title="転封">移封</a>を要求する。<a href="/wiki/4%E6%9C%881%E6%97%A5_(%E6%97%A7%E6%9A%A6)" title="4月1日 (旧暦)">4月1日</a>、家康は畿内の諸大名に大坂から脱出しようとする浪人を捕縛すること、<a href="/wiki/%E5%B0%8F%E7%AC%A0%E5%8E%9F%E7%A7%80%E6%94%BF" title="小笠原秀政">小笠原秀政</a>に伏見城の守備に向かうことを命じた。<a href="/wiki/4%E6%9C%884%E6%97%A5_(%E6%97%A7%E6%9A%A6)" title="4月4日 (旧暦)">4日</a>、家康は九男・<a href="/wiki/%E5%BE%B3%E5%B7%9D%E7%BE%A9%E7%9B%B4" title="徳川義直">徳川義直</a>の婚儀のためとして駿府を出発、名古屋に向かった。翌<a href="/wiki/4%E6%9C%885%E6%97%A5_(%E6%97%A7%E6%9A%A6)" title="4月5日 (旧暦)">5日</a>に大野治長の使者が来て豊臣家の移封は辞したいと申し出ると、常高院を通じて「其の儀に於いては是非なき仕合せ」（そういうことならどうしようもない）と答え、<a href="/wiki/4%E6%9C%886%E6%97%A5_(%E6%97%A7%E6%9A%A6)" title="4月6日 (旧暦)">6日</a>および<a href="/wiki/4%E6%9C%887%E6%97%A5_(%E6%97%A7%E6%9A%A6)" title="4月7日 (旧暦)">7日</a>に諸大名に鳥羽・伏見に集結するよう命じた。冬の陣で江戸に留め置かれていた黒田長政と加藤嘉明は本人の出陣が許されたが、福島正則は引き続き江戸に留め置かれた。',
+        '日本国（にほんこく、にっぽんこく、英: Japan）、または日本（にほん、にっぽん）は、東アジアに位置する民主制国家[1]。首都は東京都[注 2][2][3]。全長3500キロメートル以上にわたる国土は、主に日本列島[注 6]および千島列島・南西諸島・伊豆諸島・小笠原諸島などの弧状列島により構成され[3][4]、大部分が温帯に属するが、北部や島嶼部では亜寒帯や熱帯の地域がある[5][6]。地形は起伏に富み、火山地・丘陵を含む山地の面積は国土の約75 % を占め[6]、沿岸の平野部に人口が集中している。国内には行政区分として47の都道府県があり、日本人（大和民族・琉球民族・アイヌ民族[注 7]・外国系の人々）と外国人が居住し、日本語を通用する[2][3]。',
+        '養殖業（ようしょくぎょう、英語: aquaculture）とは、生物を、その本体または副生成物を食品や工業製品などとして利用することを目的として、人工的に育てる産業である。金魚、錦鯉などを鑑賞・愛玩目的で育てることは「養魚」と称する場合が多い[1]。狭義及び通常は、水産業（養殖漁業）の一種で、魚介類や海藻などの水棲生物の人為的繁殖について使われる。広義には、生物全般を育てることを指すが、陸生植物に関しては栽培・農耕、哺乳類に関しては畜産、そのうち乳牛などは酪農、ニワトリに関しては養鶏、ブタは養豚という用語がある。',
+      ];
+      function setExampleSentence(number) {
+        document.getElementById('answerText').value =
+          exampleSentences[number - 1];
+      }
+    </script>
+    <script>
+      function getCheckedRadioButton(name) {
+        const radioButtonElements = document.getElementsByName(name);
+        const count = radioButtonElements.length;
+        for (let i = 0; i < count; i++) {
+          if (radioButtonElements.item(i).checked) {
+            return radioButtonElements.item(i).value;
+          }
+        }
+      }
+      function getCheckedCategories() {
+        const categoryElements = document.getElementsByClassName('category');
+        return Array.prototype.filter
+          .call(categoryElements, function (categoryElements) {
+            return categoryElements.checked === true;
+          })
+          .map((x) => x.value);
+      }
+      function ShowDetails(page) {
+        let lw = window.innerWidth - 400;
+        let y = window.screenY + 100;
+
+        if (lw < 0) {
+          lw = 100;
+        }
+        window.open(
+          page,
+          'DetailsWin',
+          'left=' + lw + ',top=' + y + ',width=400,height=600,scrollbars=1'
+        );
+      }
+    </script>
+    <!-- loading -->
+    <style>
+      .ring {
+        --uib-size: 50px;
+        --uib-speed: 2s;
+        --uib-color: black;
+
+        height: var(--uib-size);
+        width: var(--uib-size);
+        vertical-align: middle;
+        transform-origin: center;
+        animation: rotate var(--uib-speed) linear infinite;
+      }
+
+      .ring circle {
+        fill: none;
+        stroke: var(--uib-color);
+        stroke-dasharray: 1, 200;
+        stroke-dashoffset: 0;
+        stroke-linecap: round;
+        animation: stretch calc(var(--uib-speed) * 0.75) ease-in-out infinite;
+      }
+
+      @keyframes rotate {
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+
+      @keyframes stretch {
+        0% {
+          stroke-dasharray: 1, 200;
+          stroke-dashoffset: 0;
+        }
+        50% {
+          stroke-dasharray: 90, 200;
+          stroke-dashoffset: -35px;
+        }
+        100% {
+          stroke-dashoffset: -124px;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div
+      id="loading"
+      style="
+        position: absolute;
+        backdrop-filter: blur(12px);
+        width: 99%;
+        height: 99%;
+        display: none;
+      "
+    >
+      <div
+        style="
+          position: absolute;
+          top: calc(50vh - 50px);
+          left: calc(50vw - 50px);
+        "
+      >
+        <svg class="ring" viewBox="25 25 50 50" stroke-width="5">
+          <circle cx="50" cy="50" r="20" />
+        </svg>
+      </div>
+    </div>
+    <h1>wikidataを対象としたEntityLinkingシステム</h1>
+    <div class="input-area">
+      <div class="category-checkboxes">
+        <h2>カテゴリー選択</h2>
+        <label for="category-0" class="category-label category-0"
+          ><input
+            type="checkbox"
+            id="category-0"
+            class="category"
+            name="category-0"
+            value="category-0"
+          />活動</label
+        >
+        <label for="category-1" class="category-label category-1"
+          ><input
+            type="checkbox"
+            id="category-1"
+            class="category"
+            name="category-1"
+            value="category-1"
+          />解剖学的構造</label
+        >
+        <label for="category-2" class="category-label category-2"
+          ><input
+            type="checkbox"
+            id="category-2"
+            class="category"
+            name="category-2"
+            value="category-2"
+          />疾患</label
+        >
+        <label for="category-3" class="category-label category-3"
+          ><input
+            type="checkbox"
+            id="category-3"
+            class="category"
+            name="category-3"
+            value="category-3"
+          />薬</label
+        >
+        <label for="category-4" class="category-label category-4"
+          ><input
+            type="checkbox"
+            id="category-4"
+            class="category"
+            name="category-4"
+            value="category-4"
+          />組織</label
+        >
+        <label for="category-5" class="category-label category-5"
+          ><input
+            type="checkbox"
+            id="category-5"
+            class="category"
+            name="category-5"
+            value="category-5"
+          />人物</label
+        >
+        <label for="category-6" class="category-label category-6"
+          ><input
+            type="checkbox"
+            id="category-6"
+            class="category"
+            name="category-6"
+            value="category-6"
+          />場所</label
+        >
+        <label for="category-7" class="category-label category-7"
+          ><input
+            type="checkbox"
+            id="category-7"
+            class="category"
+            name="category-7"
+            value="category-7"
+          />化学物質</label
+        >
+        <label for="category-8" class="category-label category-8"
+          ><input
+            type="checkbox"
+            id="category-8"
+            class="category"
+            name="category-8"
+            value="category-8"
+          />生物</label
+        >
+        <label for="category-9" class="category-label category-9"
+          ><input
+            type="checkbox"
+            id="category-9"
+            class="category"
+            name="category-9"
+            value="category-9"
+          />仕事</label
+        >
+      </div>
+      <div class="grid-middle">
+        <h2>リンキングしたい文章</h2>
+        <div>
+          <button id="exampleSentence1" onclick="setExampleSentence(1)">
+            例文1
+          </button>
+          <button id="exampleSentence2" onclick="setExampleSentence(2)">
+            例文2
+          </button>
+          <button id="exampleSentence3" onclick="setExampleSentence(3)">
+            例文3
+          </button>
+        </div>
+        <textarea name="" id="answerText" cols="60" rows="15"></textarea>
+        <button id="startButton">EL Start!</button>
+        <hr />
+
+        <details>
+          <summary><b>詳細設定</b></summary>
+          <div>
+            <b>ラベルの検索設定</b>:<br />
+            <label
+              ><input
+                type="radio"
+                id="exactMatchSearch"
+                name="selectSearchType"
+                value="exactMatchSearch"
+                checked
+              />完全一致検索</label
+            ><br />
+            <label
+              ><input
+                type="radio"
+                id="prefixSearch"
+                name="selectSearchType"
+                value="prefixSearch"
+              />前方一致検索</label
+            ><br />
+            <label
+              ><input
+                type="radio"
+                id="approximateSearch"
+                name="selectSearchType"
+                value="approximateSearch"
+              />あいまい検索</label
+            ><br />
+            <label
+              >ラベル取得上限数
+              <input type="text" id="apiLimit" value="10" size="3"
+            /></label>
+          </div>
+          <div>
+            <b
+              >ラベルのマッチ項目設定(完全一致検索、前方一致検索のどちらかを選択した時のみ)</b
+            >:<br />
+            <label>
+              <input
+                type="radio"
+                id="default"
+                name="selectMatchLabelType"
+                value="default"
+                checked
+              />デフォルト(API検索結果順) </label
+            ><br />
+            <label>
+              <input
+                type="radio"
+                id="labelPriority"
+                name="selectMatchLabelType"
+                value="labelpriority"
+              />ラベル名優先 </label
+            ><br />
+            <label
+              ><input
+                type="radio"
+                id="labelOnly"
+                name="selectMatchLabelType"
+                value="labelOnly"
+              />ラベル名のみ</label
+            ><br />
+            <label
+              ><input
+                type="radio"
+                id="aliasOnly"
+                name="selectMatchLabelType"
+                value="aliasOnly"
+              />別名のみ</label
+            >
+          </div>
+          <div>
+            <b>品詞の選択</b>:<br />
+            <label>
+              <input
+                type="radio"
+                id="nounOnly"
+                name="selectNounType"
+                value="nounOnly"
+                checked
+              />名詞のみ </label
+            ><br />
+            <label>
+              <input
+                type="radio"
+                id="properNounOnly"
+                name="selectNounType"
+                value="properNounOnly"
+              />固有名詞のみ </label
+            ><br />
+            <label>
+              <input
+                type="radio"
+                id="whiteList"
+                name="selectNounType"
+                value="whiteList"
+              />名詞ホワイトリスト </label
+            ><br />
+            <input
+              type="text"
+              id="whiteListValue"
+              size="40"
+              value="固有名詞,一般,サ変接続"
+            /><br />
+            <label>
+              <input
+                type="radio"
+                id="blackList"
+                name="selectNounType"
+                value="blackList"
+              />名詞ブラックリスト</label
+            ><br />
+            <input
+              type="text"
+              id="blackListValue"
+              size="40"
+              value="接続詞的,代名詞,非自立,特殊,形容動詞語幹"
+            />
+          </div>
+          <div>
+            <b>NGワード</b><br />
+            <input
+              type="text"
+              id="ngWords"
+              size="40"
+              value='[,],][,]、,:,(,),注,.,_,英,"'
+            /><br />
+          </div>
+          <div>
+            <b>リンク先表示方法</b><br />
+            <label
+              ><input
+                type="radio"
+                id="kgs"
+                name="SelectTargetKnowledgeGraph"
+                value="kgs"
+                checked
+              />KGSearchForWD</label
+            ><br />
+            <label
+              ><input
+                type="radio"
+                id="wikidata"
+                name="SelectTargetKnowledgeGraph"
+                value="wikidata"
+              />wikidata</label
+            >
+          </div>
+        </details>
+      </div>
+    </div>
+    <hr />
+    <div id="outputDiv">
+      <h2>テストしたいリンク済みテキスト</h2>
+      <p id="outputP"></p>
+    </div>
+    <hr />
+    <div id="evaluateResultDiv">
+      <h2>評価結果</h2>
+      <p id="evaluateResult"></p>
+    </div>
+
+    <script type="module">
+      import entityLinking from './modules/entityLinking.mjs';
+      import removeHtmlTag from './modules/test/extractText.mjs';
+      import evaluate from './modules/test/evaluate.mjs';
+      import convert2TestObject from './modules/test/convertTestObject.mjs';
+
+      window.addEventListener('DOMContentLoaded', () => {
+        const startButton = document.getElementById('startButton');
+        startButton.addEventListener(
+          'click',
+          async () => {
+            //loading画面出す
+            document.getElementById('loading').style.display = 'block';
+            //入力テキストの取得
+            const answerText = document.getElementById('answerText').value;
+            const tagRemovedText = removeHtmlTag(answerText);
+            console.log(tagRemovedText);
+            const settingObj = {
+              //API検索時の検索数上限
+              apiLimit: document.getElementById('apiLimit').value,
+              //単語の検索方法（完全一致、前方一致、あいまい検索)
+              searchType: getCheckedRadioButton('selectSearchType'),
+              //検索されるラベルのタイプ（ラベル名優先、ラベル名のみ、別名のみ）
+              selectMatchLabelType: getCheckedRadioButton(
+                'selectMatchLabelType'
+              ),
+              //エンティティリンキングの対象とする名詞の種類
+              selectNounType: getCheckedRadioButton('selectNounType'),
+              //ホワイトリスト、ブラックリストの内容
+              whiteList: document
+                .getElementById('whiteListValue')
+                .value.split(','),
+              blackList: document
+                .getElementById('blackListValue')
+                .value.split(','),
+              //NGワード
+              ngWords: document.getElementById('ngWords').value.split(','),
+              //エンティティ表示先
+              displayPage: getCheckedRadioButton('SelectTargetKnowledgeGraph'),
+              //
+              checkedCategories: getCheckedCategories(),
+            };
+
+            //エンティティリンキング実行
+            const entityLinkedText = await entityLinking(
+              tagRemovedText,
+              settingObj
+            );
+
+            //テキストの出力
+            document.getElementById('outputP').innerHTML = entityLinkedText;
+            //loading画面消す
+            document.getElementById('loading').style.display = 'none';
+
+            const answerTestObject = convert2TestObject(answerText);
+            const entityLinkingResultTestObject =
+              convert2TestObject(entityLinkedText);
+            console.log(answerTestObject);
+            console.log(entityLinkingResultTestObject);
+            const evalueateResult = evaluate(answerTestObject['ELResultArray'], entityLinkingResultTestObject['ELResultArray']);
+            const correctCount = evalueateResult.filter(x => x[0] == 'correct').length;
+            const incorrectCount = evalueateResult.filter(x => x[0] == 'incorrect').length;
+            const needConsiderationCount = evalueateResult.filter(x => x[0] == 'needConsideration').length;
+            console.log(evalueateResult);
+            console.log('correctPercentage:' + correctCount / evalueateResult.length * 100 + '%');
+            console.log('incorrectPercentage:' + incorrectCount / evalueateResult.length * 100 + '%');
+            console.log('needConsiderationPercentage:' + needConsiderationCount / evalueateResult.length * 100 + '%');
+            document.getElementById('evaluateResult').innerHTML = 'correctPercentage:' + correctCount / evalueateResult.length * 100 + '%' + '</br>' + 'incorrectPercentage:' + incorrectCount / evalueateResult.length * 100 + '%' + '</br>' + 'needConsiderationPercentage:' + needConsiderationCount / evalueateResult.length * 100 + '%';
+          },
+          false
+        );
+      });
+    </script>
+  </body>
+</html>

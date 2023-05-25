@@ -1,4 +1,4 @@
-function convert2TestObject(inputText) {
+export default function convert2TestObject(inputText) {
     let outputText = '';
     let ELResultArray = [];
     const regexATag = RegExp('(<a.*?>.*?</a>)');
