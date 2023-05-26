@@ -457,10 +457,10 @@
             const incorrectCount = evalueateResult.filter(x => x[0] == 'incorrect').length;
             const needConsiderationCount = evalueateResult.filter(x => x[0] == 'needConsideration').length;
             console.log(evalueateResult);
-            console.log('correctPercentage:' + correctCount / evalueateResult.length * 100 + '%');
-            console.log('incorrectPercentage:' + incorrectCount / evalueateResult.length * 100 + '%');
-            console.log('needConsiderationPercentage:' + needConsiderationCount / evalueateResult.length * 100 + '%');
-            document.getElementById('evaluateResult').innerHTML = 'correctPercentage:' + correctCount / evalueateResult.length * 100 + '%' + '</br>' + 'incorrectPercentage:' + incorrectCount / evalueateResult.length * 100 + '%' + '</br>' + 'needConsiderationPercentage:' + needConsiderationCount / evalueateResult.length * 100 + '%';
+            console.log('correctPercentage:' + correctCount + '/' + evalueateResult.length);
+            console.log('incorrectPercentage:' + incorrectCount + '/' + evalueateResult.length);
+            console.log('needConsiderationPercentage:' + needConsiderationCount + '/' + evalueateResult.length);
+            document.getElementById('evaluateResult').innerHTML = '正解数:' + correctCount + '/' + evalueateResult.length + '<br/>' + '不正解数:' + incorrectCount + '/' + evalueateResult.length + '<br/>' + '要検討数:' + needConsiderationCount + '/' + evalueateResult.length;
           },
           false
         );
