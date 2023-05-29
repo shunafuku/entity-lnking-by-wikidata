@@ -364,18 +364,10 @@
             <label
               ><input
                 type="radio"
-                id="kgs"
-                name="SelectTargetKnowledgeGraph"
-                value="kgs"
-                checked
-              />KGSearchForWD</label
-            ><br />
-            <label
-              ><input
-                type="radio"
                 id="wikidata"
                 name="SelectTargetKnowledgeGraph"
                 value="wikidata"
+                checked
               />wikidata</label
             >
           </div>
@@ -452,7 +444,7 @@
               convert2TestObject(entityLinkedText);
             console.log(answerTestObject);
             console.log(entityLinkingResultTestObject);
-            const evalueateResult = evaluate(answerTestObject['ELResultArray'], entityLinkingResultTestObject['ELResultArray']);
+            const evalueateResult = await evaluate(answerTestObject['ELResultArray'], entityLinkingResultTestObject['ELResultArray']);
             const correctCount = evalueateResult.filter(x => x[0] == 'correct').length;
             const incorrectCount = evalueateResult.filter(x => x[0] == 'incorrect').length;
             const needConsiderationCount = evalueateResult.filter(x => x[0] == 'needConsideration').length;
