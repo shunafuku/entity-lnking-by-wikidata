@@ -436,8 +436,7 @@
 
             //テキストの出力
             document.getElementById('outputP').innerHTML = entityLinkedText;
-            //loading画面消す
-            document.getElementById('loading').style.display = 'none';
+            
 
             const answerTestObject = convert2TestObject(answerText);
             const entityLinkingResultTestObject =
@@ -445,14 +444,31 @@
             console.log(answerTestObject);
             console.log(entityLinkingResultTestObject);
             const evalueateResult = await evaluate(answerTestObject['ELResultArray'], entityLinkingResultTestObject['ELResultArray']);
-            const correctCount = evalueateResult.filter(x => x[0] == 'correct').length;
-            const incorrectCount = evalueateResult.filter(x => x[0] == 'incorrect').length;
+            const TP = evalueateResult.filter(x => x[0] == 'TP').length;
+            const FN = evalueateResult.filter(x => x[0] == 'FN').length + evalueateResult.filter(x => x[0] == 'needConsideration').length;
+            const FP = evalueateResult.filter(x => x[0] == 'FP').length + evalueateResult.filter(x => x[0] == 'needConsideration').length;
+            const Accuracy = TP / (TP + FP + FN) //正解率
+            const presision = TP / (TP + FP); //適合率
+            const recall = TP / (TP + FN); //再現率
+            const fValue = 2 * recall * presision / (recall + presision)
             const needConsiderationCount = evalueateResult.filter(x => x[0] == 'needConsideration').length;
             console.log(evalueateResult);
-            console.log('correctPercentage:' + correctCount + '/' + evalueateResult.length);
-            console.log('incorrectPercentage:' + incorrectCount + '/' + evalueateResult.length);
-            console.log('needConsiderationPercentage:' + needConsiderationCount + '/' + evalueateResult.length);
-            document.getElementById('evaluateResult').innerHTML = '正解数:' + correctCount + '/' + evalueateResult.length + '<br/>' + '不正解数:' + incorrectCount + '/' + evalueateResult.length + '<br/>' + '要検討数:' + needConsiderationCount + '/' + evalueateResult.length;
+            console.log(TP / answerTestObject['ELResultArray'].length);
+            document.getElementById('evaluateResult').innerHTML = `
+            正解データのリンキング数：${answerTestObject['ELResultArray'].length}<br/>
+            EL結果のリンキング数：${entityLinkingResultTestObject['ELResultArray'].length}<br/>s
+            <hr/>
+            TP：${TP}<br/>
+            FN：${FN}<br/>
+            FP：${FP}<br/>
+            <hr/>
+            再現率：${recall * 100}%<br/>
+            適合率：${presision * 100}%<br/>
+            正解率：${Accuracy * 100}%<br/>
+            F値：${fValue * 100}%<br/>
+            `;
+            //loading画面消す
+            document.getElementById('loading').style.display = 'none';
           },
           false
         );

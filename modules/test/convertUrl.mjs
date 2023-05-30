@@ -13,7 +13,7 @@ export default async function fetchWikipedhiaUrlFromWikidataId(wikidataUrl) {
     }LIMIT 1
     `;
     const result = await fetchSparql(endpointUrl, query);
-    if(result['results']['bindings'][0]['s']['value'] != null){
+    if(result['results']['bindings'][0] != null){
         return result['results']['bindings'][0]['s']['value']
     }else {
         return null;
