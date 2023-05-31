@@ -1,27 +1,30 @@
 import fetchWikipedhiaUrlFromWikidataUrl from './convertUrl.mjs';
 export default async function evaluate(answerArray, entityLinkingResultArray) {
-  for(const entityLinkingResult of entityLinkingResultArray){
+  for (const entityLinkingResult of entityLinkingResultArray) {
     const wikipediaUrl = await fetchWikipedhiaUrlFromWikidataUrl(
       entityLinkingResult['link']
     );
-    if(wikipediaUrl != null){
-      entityLinkingResult['link'] = wikipediaUrl
+    if (wikipediaUrl != null) {
+      entityLinkingResult['link'] = wikipediaUrl;
     }
-    
   }
-  answerArray.forEach(x => {
+  answerArray.forEach((x) => {
     //aタグに付与されているurlが相対パスになっているので、絶対パスに変換する
-    x['link'] = 'https://ja.wikipedia.org' + x['link']
-  })
+    x['link'] = 'https://ja.wikipedia.org' + x['link'];
+  });
   const TPAndFNArray = await Promise.all(
-    answerArray.map(async (x) => {
+    answerArray.map(async (answer) => {
       //-----------------開始位置と終了位置が同じものが存在するか確認（存在しない場合、不正解）
       //1文字目が答えと同じ位置の単語のindexを取得する
       const sameStartPositionOfEntityLinking = ((entityLinkingResultArray) => {
-        for (const [index, y] of Object.entries(entityLinkingResultArray)) {
-          if (x['startPosition'] == y['startPosition']) {
+        for (const [index, entityLinkingResult] of Object.entries(
+          entityLinkingResultArray
+        )) {
+          if (answer['startPosition'] == entityLinkingResult['startPosition']) {
             return index;
-          } else if (x['startPosition'] < y['startPosition']) {
+          } else if (
+            answer['startPosition'] < entityLinkingResult['startPosition']
+          ) {
             return -1;
           }
         }
@@ -29,42 +32,54 @@ export default async function evaluate(answerArray, entityLinkingResultArray) {
       })(entityLinkingResultArray);
       //１文字目が同じ位置のものがなかった場合、不正解
       if (sameStartPositionOfEntityLinking == -1) {
-        return ['FN', [x, null]];
+        return {
+          confusionMatrix: 'FN',
+          answer: answer,
+          ELResult: null,
+        };
       } else if (
         entityLinkingResultArray[sameStartPositionOfEntityLinking][
           'endPosition'
-        ] != x['endPosition']
+        ] != answer['endPosition']
       ) {
         //最後の文字が同じ位置でなかった場合、不正解
-        return ['FN', [x, null]];
+        return {
+          confusionMatrix: 'FN',
+          answer: answer,
+          ELResult: null,
+        };
       }
       //-----------------URLが同じか確認（同じ場合：正解）（違う場合：人手による検討が必要）
       if (
-        x['link'] ==
+        answer['link'] ==
         entityLinkingResultArray[sameStartPositionOfEntityLinking]['link']
       ) {
-        return [
-          'TP',
-          [x, entityLinkingResultArray[sameStartPositionOfEntityLinking]],
-        ];
+        return {
+          confusionMatrix: 'TP',
+          answer: answer,
+          ELResult: entityLinkingResultArray[sameStartPositionOfEntityLinking],
+        };
       } else {
-        return [
-          'needConsideration',
-          [x, entityLinkingResultArray[sameStartPositionOfEntityLinking]],
-        ];
+        return {
+          confusionMatrix: 'needConsideration',
+          answer: answer,
+          ELResult: entityLinkingResultArray[sameStartPositionOfEntityLinking],
+        };
       }
     })
   );
   //EL結果には存在するが正解データにはないものを探す
   const TPAndFPArray = await Promise.all(
-    entityLinkingResultArray.map(async (x) => {
+    entityLinkingResultArray.map(async (entityLinkingResult) => {
       //-----------------開始位置と終了位置が同じものが存在するか確認（存在しない場合、不正解）
       //1文字目が答えと同じ位置の単語のindexを取得する
       const sameStartPositionOfEntityLinking = ((answerArray) => {
         for (const [index, y] of Object.entries(answerArray)) {
-          if (x['startPosition'] == y['startPosition']) {
+          if (entityLinkingResult['startPosition'] == y['startPosition']) {
             return index;
-          } else if (x['startPosition'] < y['startPosition']) {
+          } else if (
+            entityLinkingResult['startPosition'] < y['startPosition']
+          ) {
             return -1;
           }
         }
@@ -72,33 +87,42 @@ export default async function evaluate(answerArray, entityLinkingResultArray) {
       })(answerArray);
       //１文字目が同じ位置のものがなかった場合、不正解
       if (sameStartPositionOfEntityLinking == -1) {
-        return ['FP', [x, null]];
+        return {
+          confusionMatrix: 'FP',
+          answer: null,
+          ELResult: entityLinkingResult,
+        };
       } else if (
-        answerArray[sameStartPositionOfEntityLinking][
-          'endPosition'
-        ] != x['endPosition']
+        answerArray[sameStartPositionOfEntityLinking]['endPosition'] !=
+        entityLinkingResult['endPosition']
       ) {
         //最後の文字が同じ位置でなかった場合、不正解
-        return ['FP', [x, null]];
+        return {
+          confusionMatrix: 'FP',
+          answer: null,
+          ELResult: entityLinkingResult,
+        };
       }
       //-----------------URLが同じか確認（同じ場合：正解）（違う場合：人手による検討が必要）
       if (
-        x['link'] ==
+        entityLinkingResult['link'] ==
         answerArray[sameStartPositionOfEntityLinking]['link']
       ) {
-        return [
-          'TP',
-          [x, answerArray[sameStartPositionOfEntityLinking]],
-        ];
+        return {
+          confusionMatrix: 'TP',
+          answer: answerArray[sameStartPositionOfEntityLinking],
+          ELResult: entityLinkingResult,
+        };
       } else {
-        return [
-          'needConsideration',
-          [x, answerArray[sameStartPositionOfEntityLinking]],
-        ];
+        return {
+          confusionMatrix: 'needConsideration',
+          answer: answerArray[sameStartPositionOfEntityLinking],
+          ELResult: entityLinkingResult,
+        };
       }
     })
   );
-  const FPArray = TPAndFPArray.filter(x => x[0] == 'FP');
+  const FPArray = TPAndFPArray.filter((x) => x[0] == 'FP');
 
   return TPAndFNArray.concat(FPArray);
 }

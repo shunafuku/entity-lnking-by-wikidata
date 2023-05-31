@@ -436,27 +436,52 @@
 
             //テキストの出力
             document.getElementById('outputP').innerHTML = entityLinkedText;
-            
 
             const answerTestObject = convert2TestObject(answerText);
             const entityLinkingResultTestObject =
               convert2TestObject(entityLinkedText);
             console.log(answerTestObject);
             console.log(entityLinkingResultTestObject);
-            const evalueateResult = await evaluate(answerTestObject['ELResultArray'], entityLinkingResultTestObject['ELResultArray']);
-            const TP = evalueateResult.filter(x => x[0] == 'TP').length;
-            const FN = evalueateResult.filter(x => x[0] == 'FN').length + evalueateResult.filter(x => x[0] == 'needConsideration').length;
-            const FP = evalueateResult.filter(x => x[0] == 'FP').length + evalueateResult.filter(x => x[0] == 'needConsideration').length;
-            const Accuracy = TP / (TP + FP + FN) //正解率
+            const evalueateResult = await evaluate(
+              answerTestObject['ELResultArray'],
+              entityLinkingResultTestObject['ELResultArray']
+            );
+            const TPArray = evalueateResult.filter((x) => x['confusionMatrix'] == 'TP');
+            const TP = TPArray.length;
+            const FNArray = evalueateResult.filter(
+              (x) => x['confusionMatrix'] == 'FN' || x['confusionMatrix'] == 'needConsideration'
+            );
+            const FN = FNArray.length;
+            const FPArray = evalueateResult.filter(
+              (x) => x['confusionMatrix'] == 'FP' || x['confusionMatrix'] == 'needConsideration'
+            );
+            const FP = FPArray.length;
+            const Accuracy = TP / (TP + FP + FN); //正解率
             const presision = TP / (TP + FP); //適合率
             const recall = TP / (TP + FN); //再現率
-            const fValue = 2 * recall * presision / (recall + presision)
-            const needConsiderationCount = evalueateResult.filter(x => x[0] == 'needConsideration').length;
+            const fValue = (2 * recall * presision) / (recall + presision);
+            const needConsiderationCount = evalueateResult.filter(
+              (x) => x['confusionMatrix'] == 'needConsideration'
+            ).length;
             console.log(evalueateResult);
             console.log(TP / answerTestObject['ELResultArray'].length);
             document.getElementById('evaluateResult').innerHTML = `
-            正解データのリンキング数：${answerTestObject['ELResultArray'].length}<br/>
-            EL結果のリンキング数：${entityLinkingResultTestObject['ELResultArray'].length}<br/>
+            正解データのリンキング数：${
+              answerTestObject['ELResultArray'].length
+            }<br/>
+            EL結果のリンキング数：${
+              entityLinkingResultTestObject['ELResultArray'].length
+            }<br/>
+            <hr/>
+            ${(function (array) {
+              return array
+                .map(x => {
+                  return Object.keys(x['answer']).map(key => {
+                    return `${key}:${x['answer'][key]}`
+                  }).join('<br/>')
+                })
+                .join('<br/>---------------<br/>');
+            })(TPArray)}
             <hr/>
             TP：${TP}<br/>
             FN：${FN}<br/>
