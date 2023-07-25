@@ -386,123 +386,162 @@
     </div>
 
     <script type="module">
-        import entityLinking from './modules/entityLinking.mjs';
-        import removeHtmlTag from './modules/test/extractText.mjs';
-        import evaluate from './modules/test/evaluate.mjs';
-        import convert2TestObject from './modules/test/convertTestObject.mjs';
+      import entityLinking from './modules/entityLinking.mjs';
+      import removeHtmlTag from './modules/test/extractText.mjs';
+      import evaluate from './modules/test/evaluate.mjs';
+      import convert2TestObject from './modules/test/convertTestObject.mjs';
 
-        window.addEventListener('DOMContentLoaded', () => {
-          const startButton = document.getElementById('startButton');
-          startButton.addEventListener(
-            'click',
-            async () => {
-              //loading画面出す
-              document.getElementById('loading').style.display = 'block';
-              //入力テキストの取得
-              const answerText = document.getElementById('answerText').value;
-              const tagRemovedText = removeHtmlTag(answerText);
-              console.log(tagRemovedText);
-              const settingObj = {
-                //API検索時の検索数上限
-                apiLimit: document.getElementById('apiLimit').value,
-                //単語の検索方法（完全一致、前方一致、あいまい検索)
-                searchType: getCheckedRadioButton('selectSearchType'),
-                //検索されるラベルのタイプ（ラベル名優先、ラベル名のみ、別名のみ）
-                selectMatchLabelType: getCheckedRadioButton(
-                  'selectMatchLabelType'
-                ),
-                //エンティティリンキングの対象とする名詞の種類
-                selectNounType: getCheckedRadioButton('selectNounType'),
-                //ホワイトリスト、ブラックリストの内容
-                whiteList: document
-                  .getElementById('whiteListValue')
-                  .value.split(','),
-                blackList: document
-                  .getElementById('blackListValue')
-                  .value.split(','),
-                //NGワード
-                ngWords: document.getElementById('ngWords').value.split(','),
-                //エンティティ表示先
-                displayPage: getCheckedRadioButton('SelectTargetKnowledgeGraph'),
-                //
-                checkedCategories: getCheckedCategories(),
+      window.addEventListener('DOMContentLoaded', () => {
+        const startButton = document.getElementById('startButton');
+        startButton.addEventListener(
+          'click',
+          async () => {
+            //loading画面出す
+            document.getElementById('loading').style.display = 'block';
+            //入力テキストの取得
+            const answerText = document.getElementById('answerText').value;
+            const tagRemovedText = removeHtmlTag(answerText);
+            console.log(tagRemovedText);
+            const settingObj = {
+              //API検索時の検索数上限
+              apiLimit: document.getElementById('apiLimit').value,
+              //単語の検索方法（完全一致、前方一致、あいまい検索)
+              searchType: getCheckedRadioButton('selectSearchType'),
+              //検索されるラベルのタイプ（ラベル名優先、ラベル名のみ、別名のみ）
+              selectMatchLabelType: getCheckedRadioButton(
+                'selectMatchLabelType'
+              ),
+              //エンティティリンキングの対象とする名詞の種類
+              selectNounType: getCheckedRadioButton('selectNounType'),
+              //ホワイトリスト、ブラックリストの内容
+              whiteList: document
+                .getElementById('whiteListValue')
+                .value.split(','),
+              blackList: document
+                .getElementById('blackListValue')
+                .value.split(','),
+              //NGワード
+              ngWords: document.getElementById('ngWords').value.split(','),
+              //エンティティ表示先
+              displayPage: getCheckedRadioButton('SelectTargetKnowledgeGraph'),
+              //
+              checkedCategories: getCheckedCategories(),
+            };
+
+            //エンティティリンキング実行
+            const entityLinkedText = await entityLinking(
+              tagRemovedText,
+              settingObj
+            );
+
+            //テキストの出力
+            document.getElementById('outputP').innerHTML = entityLinkedText;
+
+            const answerTestObject = convert2TestObject(answerText);
+            const entityLinkingResultTestObject =
+              convert2TestObject(entityLinkedText);
+            console.log(answerTestObject);
+            console.log(entityLinkingResultTestObject);
+            //linkをwikidataIdに変換
+            async function fetchSparql(endpointUrl, sparqlQuery) {
+              const fullUrl =
+                endpointUrl + '?query=' + encodeURIComponent(sparqlQuery);
+              const headers = {
+                Accept: 'application/sparql-results+json',
               };
+              return fetch(fullUrl, { headers, method: 'GET', mode: 'cors' })
+                .then((body) => {
+                  if (!body.ok) {
+                    console.error('サーバーエラー');
+                  }
+                  return body.json();
+                })
+                .catch((error) => {
+                  console.error('通信に失敗しました', error);
+                });
+            }
+            function extractWikidataId(url) {
+              const regex = /(Q\d+)/;
+              const match = url.match(regex);
 
-              //エンティティリンキング実行
-              const entityLinkedText = await entityLinking(
-                tagRemovedText,
-                settingObj
-              );
-
-              //テキストの出力
-              document.getElementById('outputP').innerHTML = entityLinkedText;
-
-              const answerTestObject = convert2TestObject(answerText);
-              const entityLinkingResultTestObject =
-                convert2TestObject(entityLinkedText);
-              console.log(answerTestObject);
-              console.log(entityLinkingResultTestObject);
-              //linkをwikidataIdに変換
-              async function fetchWikidataIdFromWikipediaUrl(wikipedhiaUrl) {
-                const endpointUrl = 'https://query.wikidata.org/sparql';
-                const query = `PREFIX schema: <http://schema.org/>
+              if (match) {
+                return match[1];
+              } else {
+                console.log('一致する部分が見つかりませんでした');
+                return null;
+              }
+            }
+            async function fetchWikidataIdFromWikipediaUrl(wikipedhiaUrl) {
+              const endpointUrl = 'https://query.wikidata.org/sparql';
+              const query = `PREFIX schema: <http://schema.org/>
       PREFIX wd: <http://www.wikidata.org/entity/>
       select ?o where {
-        <${encodeURI(wikipedhiaUrl)}> schema:about ?o ;
+        <${wikipedhiaUrl}> schema:about ?o ;
            schema:inLanguage 'ja' ;
            schema:isPartOf <https://ja.wikipedia.org/> .
       }LIMIT 1
       `;
-                const result = await fetchSparql(endpointUrl, query);
-                if (result['results']['bindings'][0] != null) {
-                  return result['results']['bindings'][0]['o']['value'];
-                } else {
-                  return null;
-                }
+              const result = await fetchSparql(endpointUrl, query);
+              console.log('neko');
+              console.log(query);
+              console.log(result);
+              if (result['results']['bindings'][0] != null) {
+                return result['results']['bindings'][0]['o']['value'];
+              } else {
+                return null;
               }
+            }
 
-              const link2wikidataIdResult = await Promise.all(
-                answerTestObject['ELResultArray'].map(async x => {
-                  return {
-                  'startPosition': x['startPosition'],
-                  'endPosition': x['endPosition'],
-                  'wikidataId': await fetchWikidataIdFromWikipediaUrl(x['link']),
-                  'label': x['label']
-                }
-                })
-              )
-              console.log(link2wikidataIdResult);
+            const link2wikidataIdResultArray = await Promise.all(
+              answerTestObject['ELResultArray'].map(async (x) => {
+                const wikidataUrl = await fetchWikidataIdFromWikipediaUrl(
+                  'https://ja.wikipedia.org' + x['link']
+                );
+                const wikidataId = extractWikidataId(wikidataUrl);
+                return {
+                  startPosition: x['startPosition'],
+                  endPosition: x['endPosition'],
+                  wikidataId: wikidataId,
+                  label: x['label'],
+                };
+              })
+            );
+            const link2wikidataIdResult = {
+              outputText: answerTestObject['outputText'],
+              ELResultArray: link2wikidataIdResultArray,
+            };
+            console.log(link2wikidataIdResult);
 
-              const evalueateResult = await evaluate(
-                answerTestObject['ELResultArray'],
-                entityLinkingResultTestObject['ELResultArray']
-              );
-              const TPArray = evalueateResult.filter(
-                (x) => x['confusionMatrix'] == 'TP'
-              );
-              const TP = TPArray.length;
-              const FNArray = evalueateResult.filter(
-                (x) =>
-                  x['confusionMatrix'] == 'FN' ||
-                  x['confusionMatrix'] == 'needConsideration'
-              );
-              const FN = FNArray.length;
-              const FPArray = evalueateResult.filter(
-                (x) =>
-                  x['confusionMatrix'] == 'FP' ||
-                  x['confusionMatrix'] == 'needConsideration'
-              );
-              const FP = FPArray.length;
-              const Accuracy = TP / (TP + FP + FN); //正解率
-              const presision = TP / (TP + FP); //適合率
-              const recall = TP / (TP + FN); //再現率
-              const fValue = (2 * recall * presision) / (recall + presision);
-              const needConsiderationCount = evalueateResult.filter(
-                (x) => x['confusionMatrix'] == 'needConsideration'
-              ).length;
-              console.log(evalueateResult);
-              console.log(TP / answerTestObject['ELResultArray'].length);
-              document.getElementById('evaluateResult').innerHTML = `
+            const evalueateResult = await evaluate(
+              answerTestObject['ELResultArray'],
+              entityLinkingResultTestObject['ELResultArray']
+            );
+            const TPArray = evalueateResult.filter(
+              (x) => x['confusionMatrix'] == 'TP'
+            );
+            const TP = TPArray.length;
+            const FNArray = evalueateResult.filter(
+              (x) =>
+                x['confusionMatrix'] == 'FN' ||
+                x['confusionMatrix'] == 'needConsideration'
+            );
+            const FN = FNArray.length;
+            const FPArray = evalueateResult.filter(
+              (x) =>
+                x['confusionMatrix'] == 'FP' ||
+                x['confusionMatrix'] == 'needConsideration'
+            );
+            const FP = FPArray.length;
+            const Accuracy = TP / (TP + FP + FN); //正解率
+            const presision = TP / (TP + FP); //適合率
+            const recall = TP / (TP + FN); //再現率
+            const fValue = (2 * recall * presision) / (recall + presision);
+            const needConsiderationCount = evalueateResult.filter(
+              (x) => x['confusionMatrix'] == 'needConsideration'
+            ).length;
+            console.log(evalueateResult);
+            console.log(TP / answerTestObject['ELResultArray'].length);
+            document.getElementById('evaluateResult').innerHTML = `
               正解データのリンキング数：${
                 answerTestObject['ELResultArray'].length
               }<br/>
@@ -531,12 +570,12 @@
               正解率：${Accuracy * 100}%<br/>
               F値：${fValue * 100}%<br/>
               `;
-              //loading画面消す
-              document.getElementById('loading').style.display = 'none';
-            },
-            false
-          );
-        });
+            //loading画面消す
+            document.getElementById('loading').style.display = 'none';
+          },
+          false
+        );
+      });
     </script>
   </body>
 </html>
