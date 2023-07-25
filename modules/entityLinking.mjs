@@ -42,32 +42,27 @@ function needsSearch(morphologicalAnalysisResult, settingObj) {
       settingObj['whiteList'].indexOf(
         morphologicalAnalysisResult['pos_detail_3']
       ) == -1
-    ) {
-      // pos_detail_3の値がホワイトリストになかった場合
+    ) {// pos_detail_3の値がホワイトリストになかった場合
       return false;
     }
-  } else if (settingObj['selectNounType'] == 'blackList') {
-    // ブラックリストの場合
+  } else if (settingObj['selectNounType'] == 'blackList') {// ブラックリストの場合
     if (
       settingObj['blackList'].indexOf(
         morphologicalAnalysisResult['pos_detail_1']
       ) != -1
-    ) {
-      // pos_detail_1の値がブラックリストになかった場合
+    ) {// pos_detail_1の値がブラックリストになかった場合
       return false;
     } else if (
       settingObj['blackList'].indexOf(
         morphologicalAnalysisResult['pos_detail_2']
       ) != -1
-    ) {
-      // pos_detail_2の値がブラックリストになかった場合
+    ) {// pos_detail_2の値がブラックリストになかった場合
       return false;
     } else if (
       settingObj['blackList'].indexOf(
         morphologicalAnalysisResult['pos_detail_3']
       ) != -1
-    ) {
-      // pos_detail_3の値がブラックリストになかった場合
+    ) {// pos_detail_3の値がブラックリストになかった場合
       return false;
     }
   } else {
