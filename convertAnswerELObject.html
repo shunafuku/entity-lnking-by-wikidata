@@ -73,8 +73,11 @@
             function convert2TestObject(inputText) {
               let outputText = '';
               let ELResultArray = [];
+              const regexRemoveTag = RegExp('(<[^<>a]*>|</[^<>a]*>|<span[^<>]*>|</span[^<>]*>|<sup.*?>.*?</sup>)', 'g');
+              console.log(inputText.match(regexRemoveTag, ''));
+              const removedText = inputText.replaceAll(regexRemoveTag, '');
               const regexATag = RegExp('(<a.*?>.*?</a>)');
-              const splits = inputText.split(regexATag);
+              const splits = removedText.split(regexATag);
               splits.forEach((x) => {
                 if (regexATag.test(x)) {
                   //aタグの値を取得
